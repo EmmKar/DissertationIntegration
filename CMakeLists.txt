@@ -163,6 +163,7 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/inspection_plan
   scripts/generate_waypoints
+  scripts/move_robot
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

@@ -14,7 +14,6 @@ import os
 import rospkg
 from geometry_msgs.msg import PoseStamped #Import data type published by the topic
 
-
 #Function to call when a message has been recieved. Posts data in terminal, and saves it to a file in waypoints folder. 
 def callback(data, fileName):
 
@@ -53,7 +52,7 @@ def callback(data, fileName):
     waypoints.close()
 
     # Send confirmation to terminal
-    rospy.loginfo("Waypoint added to file {}!\n".format(filePath))
+    rospy.loginfo("Waypoint added to file {}!".format(filePath))
     print("-"*100+"\n\n")
     
 def waypoint_recorder(fileName):
@@ -66,7 +65,7 @@ def waypoint_recorder(fileName):
     
     # this subscribes to the /move_base_simple/goal topic, which is of type PoseStamped, 
     # and when messages are recieved, callback is invoked with the message as its first arguement. 
-    waypointCount = rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback, fileName)
+    rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback, fileName)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
