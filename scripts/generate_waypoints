@@ -2,19 +2,56 @@
 
 
 # Subscriber node to collect waypoints from the /move_base_simple/goal topic
-# Based on tutorial: http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+# Based on tutorials: 
+# - http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+# - https://stackoverflow.com/questions/20432912/writing-to-a-new-file-if-it-doesnt-exist-and-appending-to-a-file-if-it-does
+#
 # Author: Emma Karlsmose
 # Last Edited: 6 May 2022
 
 import rospy
-#from std_msgs.msg import String
+import os
+import rospkg
 from geometry_msgs.msg import PoseStamped #Import data type published by the topic
 
 
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "\nPosition Logged! \nHeader: \n {} \nPose: \n {} \n\n".format(data.header, data.pose))
+#Function to call when a message has been recieved. Posts data in terminal, and saves it to a file in waypoints folder. 
+def callback(data, fileName):
 
-def waypointRecorder():
+
+    header = data.header
+    position = data.pose.position
+    orient = data.pose.orientation
+
+    rospack = rospkg.RosPack()
+
+    packagePath = rospack.get_path('inspection_plan')
+    filePath = packagePath + '/waypoints/' + fileName
+
+    print(packagePath, filePath)
+
+    rospy.loginfo(rospy.get_caller_id() +
+                    "\n ------ POSITION LOGGED! ------ " +
+                    "\nHEADER: \n{}\n".format(header) +
+                    "\nPOSITION: \n{}\n".format(position) +
+                    "\nORIENTATION: \n{}\n\n".format(orient))
+
+    rospy.loginfo(str(type([position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w])))
+    dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w])
+    
+    #Note!! This node must be run from the same directory as the file 
+    if os.path.exists(filePath):
+        filePermission = 'a' #Append data if the file already exists.
+    else:
+        filePermission = 'w' # otherwise make a new file
+    
+    waypoints = open(filePath, filePermission)
+    waypoints.write(dataString + "\n")
+    waypoints.close()
+
+    rospy.loginfo("{} written to file!".format(dataString))    
+
+def waypoint_recorder(fileName):
     # In ROS, nodes are uniquely named. If two nodes with the same
     # name are launched, the previous one is kicked off. The
     # anonymous=True flag means that rospy will choose a unique
@@ -24,10 +61,12 @@ def waypointRecorder():
 
     # this subscribes to the /move_base_simple/goal topic, which is of type PoseStamped, 
     # and when messages are recieved, callback is invoked with the message as its first arguement. 
-    rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback) 
+    rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback, fileName) 
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
 if __name__ == '__main__':
-    waypointRecorder()
+    dataFile = input("Type output file name here:")+".csv"
+
+    waypoint_recorder(dataFile)
