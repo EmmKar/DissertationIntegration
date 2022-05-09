@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+
+
+# Subscriber node to collect waypoints from the /move_base_simple/goal topic
+# Based on tutorial: http://wiki.ros.org/ROS/Tutorials/WritingPublisherSubscriber%28python%29
+# Author: Emma Karlsmose
+# Last Edited: 6 May 2022
+
+import rospy
+#from std_msgs.msg import String
+from geometry_msgs.msg import PoseStamped #Import data type published by the topic
+
+
+def callback(data):
+    rospy.loginfo(rospy.get_caller_id() + "\nPosition Logged! \nHeader: \n {} \nPose: \n {} \n\n".format(data.header, data.pose))
+
+def waypointRecorder():
+    # In ROS, nodes are uniquely named. If two nodes with the same
+    # name are launched, the previous one is kicked off. The
+    # anonymous=True flag means that rospy will choose a unique
+    # name for our 'listener' node so that multiple listeners can
+    # run simultaneously - from tutorial.
+    rospy.init_node('waypointRecorder', anonymous=True)
+
+    # this subscribes to the /move_base_simple/goal topic, which is of type PoseStamped, 
+    # and when messages are recieved, callback is invoked with the message as its first arguement. 
+    rospy.Subscriber("/move_base_simple/goal", PoseStamped, callback) 
+
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin()
+
+if __name__ == '__main__':
+    waypointRecorder()
