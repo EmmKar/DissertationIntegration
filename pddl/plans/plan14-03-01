@@ -1,0 +1,6 @@
+(move waypoint1 waypoint2)
+(turn waypoint2 object1 waypoint2)
+(inspect waypoint2 object1)
+(turn waypoint2 waypoint3 object1)
+(move waypoint2 waypoint3)
+; cost = 5 (unit cost)

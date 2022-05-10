@@ -1,0 +1,5 @@
+(turn waypoint1 waypoint2)
+(move waypoint1 waypoint2)
+(turn waypoint2 waypoint3)
+(move waypoint2 waypoint3)
+; cost = 4 (unit cost)

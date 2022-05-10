@@ -1,0 +1,10 @@
+Run the following command from fast downward directory to run the planner and save the file to an output (here named test):
+
+./fast-downward.py --plan-file "/home/emma/Dropbox/Documents/PDDL Project/_CS LVL 4 PROJECT/Models/test" "/home/emma/Dropbox/Documents/PDDL Project/_CS LVL 4 PROJECT/Models/inspection_domain-1-4.pddl" "/home/emma/Dropbox/Documents/PDDL Project/_CS LVL 4 PROJECT/Models/prob04-inspect02-2.pddl" --search "astar(lmcut())"
+
+
+--plan-file FILE specifies output file, and must be before domain and problem files. 
+
+General command type: 
+
+./fast-downward.py --plan-file PLAN-FILE-PATH DOMAIN-PATH PROBLEM-PATH --search HEURISTIC 
