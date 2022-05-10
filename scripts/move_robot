@@ -16,7 +16,7 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 class MoveRobot():
     def __init__(self):
         rospy.init_node('movebase_client_py', anonymous=False)
-        rospy.on_shutdown(self.shutdown)
+        #rospy.on_shutdown(self.shutdown)
         
         self.waypoints = self.importWaypoints()
         self.pathLength = len(self.waypoints)
@@ -82,37 +82,58 @@ class MoveRobot():
 
             self.move(goal)
 
-            rospy.loginfo("Moved to waypoint {}".format(str(i)))
+            # Determine if goal was successful (see notes for definitions)
+            if self.move_base_client.get_state() == 3:
+                rospy.loginfo("Moved to waypoint {}".format(str(i)))
+            elif self.move_base_client.get_state() == 1:
+                rospy.logerr("Goal not reached in time limit. Server may be unavailable")
+            elif self.move_base_client.get_state() == 4:
+                rospy.logerr("Robot stuck! Cannot reach waypoint {}. Call for help!".format(str(i)))
+            else:
+                rospy.logerr("New issue: " + 
+                                "\n{} ".format(self.move_base_client.get_goal_status_text()) +
+                                "\nState Number: {}".format(str(self.move_base_client.get_state())))
 
             i += 1
 
 
     def move(self, goal):
+        # We will cancel the goal if it hasn't been reached within 2 min, as this indicates that something has gone wrong. 
+        timeLimit = 120
+
         # send goal to MoveBaseAction server
         self.move_base_client.send_goal(goal)
 
-        # wait for server to finish performing action. Allow 2min to get there (It is sometimes a little slow in getting there)
-        finished = self.move_base_client.wait_for_result(rospy.Duration(60))
-        print(finished)
+        # wait for server to finish performing action. Allow 1min to get there
+        finished = self.move_base_client.wait_for_result(rospy.Duration(timeLimit))
+        
+        #print(finished) # See notes
+        #print(self.move_base_client.get_goal_status_text())  # See notes
+        #print(self.move_base_client.get_result()) # See notes
+        #print(self.move_base_client.get_state()) # See notes
 
         # If the result doesn't arrive, assume the server is not available
         if not finished:
             self.move_base_client.cancel_goal()
-            rospy.logerr("Something went wrong!")
-            #rospy.signal_shutdown("Action server not available!")
+            rospy.logerr("Action server not available!")
         else:
         # Result of executing the action
             return self.move_base_client.get_result()
 
 
-    def shutdown(self):
-        rospy.loginfo("Stopping the robot...")
-        # Cancel any active goals
-        self.move_base_client.cancel_goal()
-        rospy.sleep(2)
-        # Stop the robot
-        self.cmd_vel_pub.publish(Twist())
-        rospy.sleep(1)
+    # def shutdown(self):
+    #     # Cancel any active goals
+    #     print(self.move_base_client.get_goal_status_text)
+    #     print(self.move_base_client.get_state())
+    #     self.move_base_client.cancel_goal()
+    #     print(self.move_base_client.get_goal_status_text)
+    #     print(self.move_base_client.get_state())
+    #     rospy.sleep(2)
+    #     # Stop the robot
+    #     rospy.loginfo("Stopping the robot...")
+    #     self.cmd_vel_pub.publish(Twist())
+    #     rospy.sleep(1)
+    #     rospy.loginfo("Stopped the robot...")
 
 
 if __name__ == '__main__':
@@ -120,3 +141,24 @@ if __name__ == '__main__':
         MoveRobot()
     except rospy.ROSInterruptException:
         rospy.loginfo("Navigation test finished. Error occured")
+
+
+"""
+Notes: 
+
+    actionClient.wait_for_result()
+        - returns boolean, true if the result from server has been recieved within timelimit
+    actionClient.get_goal_status_text() 
+        - prints the status text of communication with server (ie status in executing goal). 
+            -"Goal reached." for successful execution
+            -"Failed to find a valid plan. Even after executing recovery behaviours." for a stuck robot
+            -"This goal has been accepted by the simple action server" for no confirmation (good or bad) recieved, i.e. .wait_for_result() timed out to false
+    print(self.move_base_client.get_result())
+        - returns blank if a valid response has been recieved from server, returns None if no response has been recieved
+    print(self.move_base_client.get_state())
+        -Gives a integer for status of server communication and executing goal 
+            - 1: request sent, no return confirmation recieved - This goal has been accepted by the simple action server
+            - 3: success - Goal reached
+            - 4: failure - Failed to find a valid plan. Even after executing recovery behaviours.
+
+"""
