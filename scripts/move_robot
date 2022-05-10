@@ -35,7 +35,7 @@ class MoveRobot():
         rospy.loginfo("Connected to move base server")
         rospy.loginfo("Starting navigation test")
 
-        result = self.traverse(self.pathLength, self.waypoints)
+        resrosult = self.traverse(self.pathLength, self.waypoints)
         if result:
             respy.loginfo("Goal execution done!")
 
