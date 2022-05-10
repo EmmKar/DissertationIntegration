@@ -30,7 +30,13 @@ class ParseNavigation():
         wpDict = self.getNames(self.waypointFile)
         plan = self.replaceNames(simplePlan, wpDict)
         self.createCSV(plan)
-        #self.printPath(plan)
+
+        #Option to save file:
+        decision = input("Would you like to save a path plot? (y/n)\n")
+        if decision.lower() == "yes" or "ye" or "y":
+            self.printPath(plan)
+        else:
+            print("No plot created")
 
     #Turn data in waypoint lookup file into a dictionary
     def getNames(self, lookupFile):
@@ -38,6 +44,7 @@ class ParseNavigation():
 
     #Returns a list consisting only of waypoint names per entry
     #First two coordinates are current waypoint, the latter two are the goal waypoint
+    #Note, empty lines in plan file will result in errors
     def getPlanList(self, rawPlan):
         newPlan = []
         finalPlan = []
