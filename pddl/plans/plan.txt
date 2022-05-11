@@ -2,7 +2,6 @@
 (move w1x w1y w2x w2y)
 (move w2x w2y w3x w3y)
 (move w3x w3y w4x w4y)
-
 (move w4x w4y w5x w5y)
 (move w5x w5y w6x w6y)
 (move w6x w6y w7x w7y)

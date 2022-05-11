@@ -17,7 +17,7 @@
 (define (domain inspection22)
 
     ;Fluents indicates the use of the numeric fragment of PDDL 
-    (:requirements :strips :typing :negative-preconditions :adl :fluents :action-costs)
+    (:requirements :strips :typing :negative-preconditions :adl :fluents)
 
     (:types
         coordinate interesting - object
