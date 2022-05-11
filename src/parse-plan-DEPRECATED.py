@@ -6,9 +6,6 @@
 # Author: Emma Karlsmose
 # Last Edited: 10 May 2022
 
-# Parsed path file is saved to inspection_plan/waypoints directory
-
-# import rospy
 import rospkg
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -32,23 +29,20 @@ class ParseNavigation():
         self.planFile = self.getFile(self.planName, 'r')
         self.waypointFile = self.getFile(self.pddlWaypoints, 'r')
 
-        #Parse plan
         simplePlan = self.getPlanList(self.planFile)
-        wpDict = self.getWpNames(self.waypointFile)
-        planList = self.replaceNames(simplePlan, wpDict)
-        planDict = self.createPlanDict(planList)
-        self.createCSV(planDict)
+        wpDict = self.getWpDict(self.waypointFile)
+        plan = self.replaceNames(simplePlan, wpDict)
+        self.createCSV(plan)
 
         #Option to save file:
         decision = input("Would you like to save a path plot? (y/n)\n")
-        if decision.lower() == "y":
-            self.printPath(planDict)
-            print(decision.lower())
+        if decision.lower() == "yes" or "ye" or "y":
+            self.printPath()
         else:
-            print("no plot created")
+            print("No plot created")
 
     #Turn data in waypoint lookup file into a dictionary
-    def getWpNames(self, lookupFile):
+    def getWpDict(self, lookupFile):
         return dict(x.strip().split('=') for x in lookupFile)
 
     #Returns a list consisting only of waypoint names per entry
@@ -68,8 +62,7 @@ class ParseNavigation():
         # remove current waypoints from plan
         for step in newPlan:
             step = step.split(" ")
-            finalPlan.append(step)
-        #print(finalPlan)
+            finalPlan.append(step[2:])
         return(finalPlan)
 
     #import textfile and parse into list
@@ -82,59 +75,21 @@ class ParseNavigation():
 
         return lineList
 
-    #Function to look up waypoint names (w1x, w2x, w1y...) and get their coordinate values
+    #Funtion that looks up and replaces values for waypoint names
     def replaceNames(self, plan, wpDict):
         newPlan = []
-        # print(wpDict)
         for step in plan:
-            newPlan.append([float(wpDict.get(wp)) if wp[0] == 'w' else wp for wp in step])
-        #print(newPlan)
+            print(step)
+            newPlan.append([wpDict.get(wp) if wp[0] == 'w' else wp for wp in step])
         return newPlan
-    
-    #Function to add step number to plan, and create dictionary for waypoints
-    def createPlanDict(self, plan):
-        #Transform to dictionary
-        index = [i+1 for i, e in enumerate(plan)]
-        tasks = [step[0] for step in plan]
-        values = [step[1:] for step in plan]
-        indexed = list(zip(index, tasks))
-
-        #Create a lookup dictionary for step. Not used, left for backup       
-        stepDict = {}
-        for key in indexed:
-            # print(key)
-            if 'move' in key: #removes initial coordinates if step involves moving
-                stepDict[key] = values[key[0]-1][2:]
-            elif 'inspect' in key:
-                stepDict[key] = [values[key[0]-1][:-1], values[key[0]-1][-1]]
-            else:
-                stepDict[key] = values[key[0]-1]
         
-        #Create formatted list with steps. Can later try to edit so that instead of just
-        # waypoint, it gives the name of the waypoint (its number)
-        stepList = []
-        for key in indexed:
-            if 'move' in key:
-                stepList.append([key[0], key[1], values[key[0]-1][2:], 'waypoint'])
-            elif 'inspect' in key:
-                stepList.append([key[0], key[1], values[key[0]-1][:-1], values[key[0]-1][-1]])
-            elif 'register-radiation' in key:
-                stepList.append([key[0], key[1], values[key[0]-1], 'waypoint'])
-            else:
-                print("createPlanDict> SOMETHING UNEXPECTED HAPPENED")
-        print(*stepList, sep='\n')
-        return stepList
-
     #Save parsed navigation plan to CSV 
     def createCSV(self, plan):
         df = pd.DataFrame(plan)
         df.to_csv(self.projectPath + self.outputFile + ".csv", index = False, header = False)
 
-    #Function to create a path plot
     def printPath(self, plan):
-        path = [x[2] for x in plan if x[1]=='move']
-        df = pd.DataFrame(path)
-        print(df)
+        df = pd.DataFrame(plan)
 
         u = np.diff(df[0])
         v = np.diff(df[1])

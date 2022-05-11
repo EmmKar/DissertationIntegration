@@ -20,7 +20,7 @@ class ParseNavigation():
         #Specify names of plan file and file with the waypoints that was copied to pddl
         self.planName = "/pddl/plans/plan16-01-03-test"
         self.pddlWaypoints = "/src/outputs/waypoint-lookup.txt"
-        self.outputFile = "/waypoints/plan16-01-03_waypoints"
+        self.outputFile = "/src/outputs/parsed-plans/plan16-01-03_waypoints"
         # self.planName = "/pddl/plans/" + input("Plan file name (incl extension): ")
         # self.pddlWaypoints = "/src/outputs/" + input("Waypoint dict: ") + ".txt"
         # self.outputFile = "/waypoints/" + input("What would you like to name your waypoint file (excl extension): ")
@@ -37,15 +37,15 @@ class ParseNavigation():
         wpDict = self.getWpNames(self.waypointFile)
         planList = self.replaceNames(simplePlan, wpDict)
         planDict = self.createPlanDict(planList)
-        # self.createCSV(plan)
+        self.createCSV(planDict)
 
-        # #Option to save file:
-        # decision = input("Would you like to save a path plot? (y/n)\n")
-        # if decision.lower() == "yes" or "ye" or "y":
-        #     self.printPath(planDict)
-        #     print(decision.lower())
-        # else:
-        #     print("no plot created")
+        #Option to save file:
+        decision = input("Would you like to save a path plot? (y/n)\n")
+        if decision.lower() == "y":
+            self.printPath(planDict)
+            print(decision.lower())
+        else:
+            print("no plot created")
 
     #Turn data in waypoint lookup file into a dictionary
     def getWpNames(self, lookupFile):
@@ -98,33 +98,32 @@ class ParseNavigation():
         tasks = [step[0] for step in plan]
         values = [step[1:] for step in plan]
         indexed = list(zip(index, tasks))
-        # stepList = list(zip(indexed, values))
-        # print(stepList)
-        # cleanList = [[]]
 
-        # for entry in stepList:
-        #     if entry[0][1] == 'move':
-        #         entry[1] == entry[1][2:]
-                
+        #Create a lookup dictionary for step. Not used, left for backup       
         stepDict = {}
-        print(values)
-        # stepDict = dict(zip(indexed, values))
         for key in indexed:
-            print(key)
-            if 'move' in key:
+            # print(key)
+            if 'move' in key: #removes initial coordinates if step involves moving
                 stepDict[key] = values[key[0]-1][2:]
+            elif 'inspect' in key:
+                stepDict[key] = [values[key[0]-1][:-1], values[key[0]-1][-1]]
             else:
                 stepDict[key] = values[key[0]-1]
-        print(stepDict)
-        #Remove unnecessary info (eg current position for move steps)
-        # print(type(stepList[1]))
-
-        # for key in stepDict.keys():
-        #     print(key[1])
         
-        print(temp)
-        
-        return 
+        #Create formatted list with steps. Can later try to edit so that instead of just
+        # waypoint, it gives the name of the waypoint (its number)
+        stepList = []
+        for key in indexed:
+            if 'move' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][2:], 'waypoint'])
+            elif 'inspect' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][:-1], values[key[0]-1][-1]])
+            elif 'register-radiation' in key:
+                stepList.append([key[0], key[1], values[key[0]-1], 'waypoint'])
+            else:
+                print("createPlanDict> SOMETHING UNEXPECTED HAPPENED")
+        print(*stepList, sep='\n')
+        return stepList
 
     #Save parsed navigation plan to CSV 
     def createCSV(self, plan):
@@ -133,7 +132,8 @@ class ParseNavigation():
 
     #Function to create a path plot
     def printPath(self, plan):
-        df = pd.DataFrame(plan)
+        path = [x[2] for x in plan if x[1]=='move']
+        df = pd.DataFrame(path)
         print(df)
 
         u = np.diff(df[0])
