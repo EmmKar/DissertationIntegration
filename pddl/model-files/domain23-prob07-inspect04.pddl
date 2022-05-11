@@ -1,8 +1,8 @@
 ;Model version 1.5. Movement between and abstract inspection of various
 ;objects and waypoints.  
 
-(define (problem inspection03)
-    (:domain inspection22)
+(define (problem inspection04)
+    (:domain inspection23)
     
     ;Objects
     (:objects   object1 object2 object3 - interesting ;Points of interest in the world
@@ -102,7 +102,8 @@
                 
     (:goal (and (forall (?x -posx ?y - posy)
                     (or (not (is-waypoint ?x ?y))
-                        (has-passed ?x ?y))) ;since the coordinates can only be put as passed for the combinations,  
+                        (and (has-passed ?x ?y)
+                             (radiation-registered ?x ?y)))) ;since the coordinates can only be put as passed for the combinations,  
                 (at-waypoint w1x w1y)
                 (forall (?o - interesting)
                         (has-inspected ?o))))

@@ -1,8 +1,8 @@
 ;Model version 1.5. Movement between and abstract inspection of various
 ;objects and waypoints.  
 
-(define (problem inspection03)
-    (:domain inspection22)
+(define (problem move-robot)
+    (:domain inspection21)
     
     ;Objects
     (:objects   object1 object2 object3 - interesting ;Points of interest in the world
@@ -98,14 +98,10 @@
     
     ;goal specification;
     ; for all combinations of x and y, either it isn't a waypoint or it has been passed
-
-                
     (:goal (and (forall (?x -posx ?y - posy)
-                    (or (not (is-waypoint ?x ?y))
-                        (has-passed ?x ?y))) ;since the coordinates can only be put as passed for the combinations,  
-                (at-waypoint w1x w1y)
-                (forall (?o - interesting)
-                        (has-inspected ?o))))
+                        (or (not (is-waypoint ?x ?y))
+                            (has-passed ?x ?y))) ;since the coordinates can only be put as passed for the combinations,  
+                (at-waypoint w1x w1y)))
 
     
     (:metric minimize (total-cost))  
