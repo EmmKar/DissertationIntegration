@@ -1,0 +1,148 @@
+#!/usr/bin/env python3
+
+# Inspired by https://github.com/pirobot/ros-by-example/blob/master/rbx_vol_1/rbx1_nav/nodes/move_base_square.py
+# Adapted to project by: Emma Karlsmose
+# Date: 09/05/2022
+
+import rospy
+import actionlib
+import rospkg
+import pandas as pd
+
+from geometry_msgs.msg import Pose, Point, Quaternion, Twist
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+
+
+class InspectionPlan():
+    def __init__(self):
+        rospy.init_node('movebase_client_py', anonymous=False)
+        
+        self.waypoints = self.importWaypoints()
+        self.pathLength = len(self.waypoints)
+        #print(waypoints[1])
+
+        # Publisher to manually control the robot (e.g. to stop it)
+        self.cmd_vel_pub = rospy.Publisher('cmd_vel', Twist)
+
+        # Subscribe to the move_base action server
+        self.move_base_client = actionlib.SimpleActionClient("move_base", MoveBaseAction)
+        rospy.loginfo("Waiting for move_base action server...")
+
+        #Wait for the server to become available (set to 60 seconds)
+        self.move_base_client.wait_for_server(rospy.Duration(60))
+
+        rospy.loginfo("Connected to move base server")
+        rospy.loginfo("Starting navigation test")
+
+        resrosult = self.traverse(self.pathLength, self.waypoints)
+        if result:
+            respy.loginfo("Goal execution done!")
+
+    def importWaypoints(self):
+        waypoints = []
+
+        ## Get path to the inspection_plan package
+        rospack = rospkg.RosPack()
+        #waypointsFile = input("Name of waypoint file: " + ".csv")
+        waypointsFile = "plan_waypoints.csv"
+        filePath = rospack.get_path('inspection_plan') + '/waypoints/' + waypointsFile
+
+        ## Orientation is represented as a quaternion, where we have that yaw is rotation around z axis, roll around x and pitch around y, 
+        ## and w indicates the amount of rotation which will accur about the axis
+        rawWaypoints = pd.read_csv(filePath,
+                                names = ['x', 'y', 'z', 'roll', 'pitch', 'yaw', 'w'])
+
+        for index, row in rawWaypoints.iterrows():
+            position = Point(row['x'], row['y'], row['z'])
+            orientation = Quaternion(row['roll'], row['pitch'], row['yaw'], row['w'])
+            waypoints.append(Pose(position, orientation))
+        
+        #print(type(waypoints))
+        return waypoints
+
+    def traverse(self, length, waypoints):
+        # Counter to track waypoints
+        i = 0
+        
+        # Cycle through the waypoints
+        while i < length and not rospy.is_shutdown():
+
+            # Initialise new goal
+            goal = MoveBaseGoal()
+            
+            # Set map
+            goal.target_pose.header.frame_id = 'map' 
+
+            # Set time stamp to 'now'
+            goal.target_pose.header.stamp = rospy.Time.now()
+
+            # Set the goal pose to the i-th waypoint
+            goal.target_pose.pose = waypoints[i]
+
+            self.move(goal)
+
+            # Determine if goal was successful (see notes for definitions)
+            if self.move_base_client.get_state() == 3:
+                rospy.loginfo("Moved to waypoint {}".format(str(i)))
+            elif self.move_base_client.get_state() == 1:
+                rospy.logerr("Goal not reached in time limit. Server may be unavailable")
+            elif self.move_base_client.get_state() == 4:
+                rospy.logerr("Robot stuck! Cannot reach waypoint {}. Call for help!".format(str(i)))
+            else: #Something unexpected happened
+                rospy.logerr("New issue: " + 
+                                "\n{} ".format(self.move_base_client.get_goal_status_text()) +
+                                "\nState Number: {}".format(str(self.move_base_client.get_state())))
+
+            i += 1
+
+
+    def move(self, goal):
+        # We will cancel the goal if it hasn't been reached within 2 min, as this indicates that something has gone wrong. 
+        timeLimit = 120
+
+        # send goal to MoveBaseAction server
+        self.move_base_client.send_goal(goal)
+
+        # wait for server to finish performing action. Allow 1min to get there
+        finished = self.move_base_client.wait_for_result(rospy.Duration(timeLimit))
+        
+        #print(finished) # See notes
+        #print(self.move_base_client.get_goal_status_text())  # See notes
+        #print(self.move_base_client.get_result()) # See notes
+        #print(self.move_base_client.get_state()) # See notes
+
+        # If the result doesn't arrive, assume the server is not available
+        if not finished:
+            self.move_base_client.cancel_goal()
+            rospy.logerr("Action server not available!")
+        else:
+        # Result of executing the action
+            return self.move_base_client.get_result()
+
+
+if __name__ == '__main__':
+    try:
+        MoveRobot()
+    except rospy.ROSInterruptException:
+        rospy.loginfo("Navigation test finished. Error occured")
+
+
+"""
+Notes: 
+
+    actionClient.wait_for_result()
+        - returns boolean, true if the result from server has been recieved within timelimit
+    actionClient.get_goal_status_text() 
+        - prints the status text of communication with server (ie status in executing goal). 
+            -"Goal reached." for successful execution
+            -"Failed to find a valid plan. Even after executing recovery behaviours." for a stuck robot
+            -"This goal has been accepted by the simple action server" for no confirmation (good or bad) recieved, i.e. .wait_for_result() timed out to false
+    print(self.move_base_client.get_result())
+        - returns blank if a valid response has been recieved from server, returns None if no response has been recieved
+    print(self.move_base_client.get_state())
+        -Gives a integer for status of server communication and executing goal 
+            - 1: request sent, no return confirmation recieved - This goal has been accepted by the simple action server
+            - 3: success - Goal reached
+            - 4: failure - Failed to find a valid plan. Even after executing recovery behaviours.
+
+"""

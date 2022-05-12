@@ -11,14 +11,15 @@ import pandas as pd
 
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from gazebo_radiation_plugins.msg import Simulated_Radiation_Msg as radiation_msg
 
 
 class InspectionPlan():
     def __init__(self):
         rospy.init_node('movebase_client_py', anonymous=False)
         
-        self.waypoints = self.importWaypoints()
-        self.pathLength = len(self.waypoints)
+        self.plan = self.importParsedPlan()
+        self.pathLength = len(self.plan)
         #print(waypoints[1])
 
         # Publisher to manually control the robot (e.g. to stop it)
@@ -34,64 +35,98 @@ class InspectionPlan():
         rospy.loginfo("Connected to move base server")
         rospy.loginfo("Starting navigation test")
 
-        resrosult = self.traverse(self.pathLength, self.waypoints)
+        resrosult = self.implementPlan(self.pathLength, self.plan)
         if result:
             respy.loginfo("Goal execution done!")
 
-    def importWaypoints(self):
+    def importParsedPlan(self):
         waypoints = []
 
         ## Get path to the inspection_plan package
         rospack = rospkg.RosPack()
-        #waypointsFile = input("Name of waypoint file: " + ".csv")
-        waypointsFile = "plan_waypoints.csv"
-        filePath = rospack.get_path('inspection_plan') + '/waypoints/' + waypointsFile
+        #planFile = input("Name of waypoint file: " + ".csv")
+        planFile = "plan16-01-03_waypoints.csv"
+        filePath = rospack.get_path('inspection_plan') + \
+                          '/src/outputs/parsed-plans/' + \
+                           planFile
 
         ## Orientation is represented as a quaternion, where we have that yaw is rotation around z axis, roll around x and pitch around y, 
         ## and w indicates the amount of rotation which will accur about the axis
-        rawWaypoints = pd.read_csv(filePath,
-                                names = ['x', 'y', 'z', 'roll', 'pitch', 'yaw', 'w'])
+        rawPlan = pd.read_csv(filePath,
+                                names = ['step_num', 'task', 'coordinates', 'object_type'])
 
-        for index, row in rawWaypoints.iterrows():
-            position = Point(row['x'], row['y'], row['z'])
-            orientation = Quaternion(row['roll'], row['pitch'], row['yaw'], row['w'])
-            waypoints.append(Pose(position, orientation))
+        ## Do a bit of formatting
+        rawPlan['coordinates']=[x.strip('[]').split(', ') for x in rawPlan['coordinates']]
+        rawPlan['x'] = [float(x) for x, y in rawPlan['coordinates']]
+        rawPlan['y'] = [float(y) for x, y in rawPlan['coordinates']]
+        rawPlan = rawPlan.drop('coordinates', axis=1)
+        # print(type(rawPlan['x'][0]))
+        # print(rawPlan)
+
+        return rawPlan
+
+    def getPose(self, plan):
+        # LOOKUP Quaternion from original waypoint file from coordinates, then implement this and return as
+        # second argument (or as new funciton). Have pose for each step, we also need position in 
+        # other tasks
+        # for index, row in rawWaypoints.iterrows():
+        #     position = Point(row['x'], row['y'], row['z'])
+        #     orientation = Quaternion(row['roll'], row['pitch'], row['yaw'], row['w'])
+        #     waypoints.append(Pose(position, orientation))
         
         #print(type(waypoints))
-        return waypoints
+        return
 
-    def traverse(self, length, waypoints):
-        # Counter to track waypoints
+    def implementPlan(self, length, plan_df):
+        # Counter to track which step in plan we're on
         i = 0
         
         # Cycle through the waypoints
         while i < length and not rospy.is_shutdown():
-
-            # Initialise new goal
-            goal = MoveBaseGoal()
             
-            # Set map
-            goal.target_pose.header.frame_id = 'map' 
+            if plan_df.iloc[i]['task'] == 'move':
+                # Initialise new goal
+                goal = MoveBaseGoal()
+                
+                # Set map
+                goal.target_pose.header.frame_id = 'map' 
 
-            # Set time stamp to 'now'
-            goal.target_pose.header.stamp = rospy.Time.now()
+                # Set time stamp to 'now'
+                goal.target_pose.header.stamp = rospy.Time.now()
 
-            # Set the goal pose to the i-th waypoint
-            goal.target_pose.pose = waypoints[i]
+                goal.target_pose.pose.position.x = plan_df.iloc[i]['x']
+                goal.target_pose.pose.position.y = plan_df.iloc[i]['y']
+                goal.target_pose.pose.orientation.w = 1.0
 
-            self.move(goal)
+                # Set the goal pose to the i-th waypoint
+                #goal.target_pose.pose = waypoints[i]
 
-            # Determine if goal was successful (see notes for definitions)
-            if self.move_base_client.get_state() == 3:
-                rospy.loginfo("Moved to waypoint {}".format(str(i)))
-            elif self.move_base_client.get_state() == 1:
-                rospy.logerr("Goal not reached in time limit. Server may be unavailable")
-            elif self.move_base_client.get_state() == 4:
-                rospy.logerr("Robot stuck! Cannot reach waypoint {}. Call for help!".format(str(i)))
-            else: #Something unexpected happened
-                rospy.logerr("New issue: " + 
-                                "\n{} ".format(self.move_base_client.get_goal_status_text()) +
-                                "\nState Number: {}".format(str(self.move_base_client.get_state())))
+                self.move(goal)
+
+                # Determine if goal was successful (see notes for definitions)
+                if self.move_base_client.get_state() == 3:
+                    rospy.loginfo("Completed step {} of plan".format(str(i)))
+                    rospy.loginfo("Moved to waypoint {}".format(str(i)))
+                elif self.move_base_client.get_state() == 1:
+                    rospy.logerr("Goal not reached in time limit. Server may be unavailable")
+                elif self.move_base_client.get_state() == 4:
+                    rospy.logerr("Robot stuck! Cannot reach waypoint {}. Call for help!".format(str(i)))
+                else: #Something unexpected happened
+                    rospy.logerr("New issue: " + 
+                                    "\n{} ".format(self.move_base_client.get_goal_status_text()) +
+                                    "\nState Number: {}".format(str(self.move_base_client.get_state())))
+            elif plan_df.iloc[i]['task'] == 'inspect':
+                rospy.loginfo("Inspection object...")
+                # Here, specific inspection tasks could be called, implemented
+                # in new nodes, another function, or otherwise, depending on the specific need. 
+                rospy.sleep(5)
+                rospy.loginfo("Inspected object {}".format(plan_df.iloc[i]['object_type']))
+
+            elif plan_df.iloc[i]['task'] == 'register_radiation':
+                rospy.loginfo("Checking radiation levels...")
+                self.recordRadiation()
+
+
 
             i += 1
 
@@ -118,11 +153,22 @@ class InspectionPlan():
         else:
         # Result of executing the action
             return self.move_base_client.get_result()
+    
+    # subscribe to topic: /radiation_sensor_plugin/sensor_0. 
+    # topic type is gazebo_radiation_plugins/Simulated_Radiation_Msg
+    # COULD make this a separate node later
+    def recordRadiation(self):
+        # Launch a node to subscribe to the radiation readings. 
+        # rospy.init_node('radiationRecorder', anonymous=True)
 
+        # Create subscriber
+        # rospy.Subscriber('/radiation_sensor_plugin/sensor_0', radiation_msg, )
+        record = rospy.wait_for_message('/radiation_sensor_plugin/sensor_0', radiation_msg)
+        rospy.loginfo("Radiation recorded: \n" + record)
 
 if __name__ == '__main__':
     try:
-        MoveRobot()
+        InspectionPlan()
     except rospy.ROSInterruptException:
         rospy.loginfo("Navigation test finished. Error occured")
 
