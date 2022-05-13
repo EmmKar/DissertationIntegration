@@ -59,7 +59,6 @@
     ;     :effect (and    (at-waypoint ?w) 
     ;                     (rob-facing ?e) 
     ;                     (not (rob-facing ?f)))
-        
     ;     ;NEED ATTENTION: HOW DO I MAKE THE ROBOT STOP FACING EVERYTHING ELSE???
     
     ; )

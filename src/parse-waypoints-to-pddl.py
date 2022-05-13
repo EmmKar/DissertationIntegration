@@ -7,7 +7,7 @@ import rospkg
 
 ## Get path to the inspection_plan package
 rospack = rospkg.RosPack()
-waypointsFile = input("Name of input waypoint file: ")
+waypointsFile = input("Name of input waypoint file (excl extension): ")
 # waypointsFile = 'test.csv'
 filePath = rospack.get_path('inspection_plan') + '/waypoints/' + waypointsFile + ".csv"
 
@@ -20,8 +20,9 @@ waypoints = pd.read_csv(filePath,
 #save waypoints to file, formatted to easily initialise in PDDL model
 #save waypoints to file, formatted to keep track of which name is 
 #   which waypoint
-pddl_waypoints = open("pddl-" + waypointsFile + ".txt", "w")
-waypoint_lookup = open("waypoints-" + waypointsFile + "-lookup.txt", "w")
+outputPath = rospack.get_path('inspection_plan') + "/src/outputs/"
+pddl_waypoints = open(outputPath + "pddl-" + waypointsFile + ".txt", "w")
+waypoint_lookup = open(outputPath + waypointsFile + "-lookup.txt", "w")
 for i, x in waypoints['x'].iteritems():
     pddl_waypoints.write("(= (waypoint w{}x) {}) \n".format(i+1, x))
     waypoint_lookup.write("w{}x={}\n".format(i+1, x))
@@ -47,16 +48,18 @@ mytest = test()
 waypoints = waypoints.drop(['z', 'roll', 'pitch', 'yaw', 'w'], axis=1)
 #print(waypoints)
 
-
-## Create plot. LATER can save an image of the map and overlay it into the plot so it is clearer where the waypoints are. 
-plt.figure()
-plt.title("Waypoint Plot")
-plt.scatter(waypoints.x, waypoints.y)
-plt.ylim(ymax=10, ymin=-10)
-plt.xlim(xmax=10, xmin=-10)
-plt.xticks(range(-9,10,3))
-plt.yticks(range(-9,10,3))
-plt.xlabel("x")
-plt.ylabel("y")
-plt.savefig("figures/waypoint_plot.png")
-plt.show()
+create_figure = input("Would you like to plot these waypoints? (y/n) ")
+if create_figure.lower() == 'y':
+    plotName = input("What would you like to name the plot? (excl extension): ")
+    ## Create plot. LATER can save an image of the map and overlay it into the plot so it is clearer where the waypoints are. 
+    plt.figure()
+    plt.title("Waypoint Plot: " + plotName)
+    plt.scatter(waypoints.x, waypoints.y)
+    plt.ylim(ymax=10, ymin=-10)
+    plt.xlim(xmax=10, xmin=-10)
+    plt.xticks(range(-9,10,3))
+    plt.yticks(range(-9,10,3))
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.savefig(rospack.get_path('inspection_plan') + "/src/figures/" + plotName + ".png")
+    plt.show()
