@@ -2,7 +2,11 @@
 
 # Inspired by https://github.com/pirobot/ros-by-example/blob/master/rbx_vol_1/rbx1_nav/nodes/move_base_square.py
 # Adapted to project by: Emma Karlsmose
-# Date: 09/05/2022
+# Last edited: 13/05/2022
+#
+# Takes a plan file output by a pddl planner, parses it, and sends the actions to
+# to the simulation. 
+
 
 import rospy
 import actionlib
@@ -44,8 +48,8 @@ class InspectionPlan():
 
         ## Get path to the inspection_plan package
         rospack = rospkg.RosPack()
-        #planFile = input("Name of waypoint file: " + ".csv")
-        planFile = "plan16-01-03_waypoints.csv"
+        planFile = input("Name of parsed plan (excl extension): " + ".csv")
+        # planFile = "plan16-01-03_waypoints.csv"
         filePath = rospack.get_path('inspection_plan') + \
                           '/src/outputs/parsed-plans/' + \
                            planFile
@@ -116,17 +120,15 @@ class InspectionPlan():
                                     "\n{} ".format(self.move_base_client.get_goal_status_text()) +
                                     "\nState Number: {}".format(str(self.move_base_client.get_state())))
             elif plan_df.iloc[i]['task'] == 'inspect':
-                rospy.loginfo("Inspection object...")
-                # Here, specific inspection tasks could be called, implemented
-                # in new nodes, another function, or otherwise, depending on the specific need. 
-                rospy.sleep(5)
-                rospy.loginfo("Inspected object {}".format(plan_df.iloc[i]['object_type']))
+                rospy.loginfo("Inspecting object...")
+                self.inspectObject(plan_df, i)
 
-            elif plan_df.iloc[i]['task'] == 'register_radiation':
+            elif plan_df.iloc[i]['task'] == 'register-radiation':
                 rospy.loginfo("Checking radiation levels...")
                 self.recordRadiation()
-
-
+            else:
+                rospy.logerr("Unknown task. Please check your plan was parsed correctly")
+                print(plan_df.iloc[i])
 
             i += 1
 
@@ -154,6 +156,13 @@ class InspectionPlan():
         # Result of executing the action
             return self.move_base_client.get_result()
     
+    def inspectObject(self, plan_df, index):
+        # Here, specific inspection tasks could be called, implemented
+        # in new nodes, another function, or otherwise, depending on the specific need.         
+        rospy.sleep(5)
+        rospy.loginfo("Inspected object {}".format(plan_df.iloc[index]['object_type']))
+        return
+    
     # subscribe to topic: /radiation_sensor_plugin/sensor_0. 
     # topic type is gazebo_radiation_plugins/Simulated_Radiation_Msg
     # COULD make this a separate node later
@@ -164,7 +173,8 @@ class InspectionPlan():
         # Create subscriber
         # rospy.Subscriber('/radiation_sensor_plugin/sensor_0', radiation_msg, )
         record = rospy.wait_for_message('/radiation_sensor_plugin/sensor_0', radiation_msg)
-        rospy.loginfo("Radiation recorded: \n" + record)
+        rospy.loginfo("Radiation recorded: \n")
+        rospy.loginfo(record)
 
 if __name__ == '__main__':
     try:

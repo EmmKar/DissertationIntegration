@@ -1,0 +1,93 @@
+inspection_plan
+├── CMakeLists.txt
+├── README.md
+├── misc
+│   ├── grid_size.txt
+│   └── move_to_single_point.cpp
+├── package.xml
+├── pddl
+│   ├── misc
+│   │   ├── compile-reports.sh
+│   │   └── fast-downward-command.txt
+│   ├── model-files
+│   │   ├── domain-1-1.pddl
+│   │   ├── domain-1-2.pddl
+│   │   ├── domain-1-3.pddl
+│   │   ├── domain-1-4.pddl
+│   │   ├── domain-1-5.pddl
+│   │   ├── domain-1-6.pddl
+│   │   ├── domain-2-1.pddl
+│   │   ├── domain-2-2.pddl
+│   │   ├── domain-2-3.pddl
+│   │   ├── domain-2-4.pddl
+│   │   ├── domain11-prob01-move2wp.pddl
+│   │   ├── domain12-prob02-move3wp.pddl
+│   │   ├── domain13-prob03-inspect01.pddl
+│   │   ├── domain13-prob04-inspect02.pddl
+│   │   ├── domain14-prob03-inspect01.pddl
+│   │   ├── domain14-prob04-inspect02.pddl
+│   │   ├── domain15-prob04-inspect02.pddl
+│   │   ├── domain16-prob01-inspect03.pddl
+│   │   ├── domain21-prob05-move03.pddl
+│   │   ├── domain22-prob06-inspect03.pddl
+│   │   ├── domain23-prob07-inspect04.pddl
+│   │   └── domain24-prob08-inspect05.pddl
+│   ├── plans
+│   │   ├── plan.txt
+│   │   ├── plan11-01
+│   │   ├── plan12-02
+│   │   ├── plan13-03-01
+│   │   ├── plan13-04-02
+│   │   ├── plan14-03-01
+│   │   ├── plan14-04-02
+│   │   ├── plan15-04-02
+│   │   ├── plan16-01-03-test
+│   │   ├── plan22-06-03
+│   │   └── plan23-07-04
+│   └── validation
+│       ├── report11-01.pdf
+│       ├── report11-01.tex
+│       ├── report12-02.pdf
+│       ├── report12-02.tex
+│       ├── report13-03-01.pdf
+│       ├── report13-03-01.tex
+│       ├── report13-04-02.pdf
+│       ├── report13-04-02.tex
+│       ├── report14-03-01.pdf
+│       ├── report14-03-01.tex
+│       ├── report14-04-02.pdf
+│       ├── report14-04-02.tex
+│       ├── report15-04-02.pdf
+│       └── report15-04-02.tex
+├── scripts
+│   ├── generate_waypoints
+│   ├── inspection_plan
+│   ├── inspection_plan.backup.2022-05-11
+│   ├── move_robot
+│   └── move_robot_to_point
+├── src
+│   ├── figures
+│   │   ├── delete.png
+│   │   ├── path-test.png
+│   │   ├── testing.png
+│   │   └── waypoint_plot.png
+│   ├── outputs
+│   │   ├── parsed-plans
+│   │   │   └── plan16-01-03_waypoints.csv
+│   │   ├── pddl-waypoints.txt
+│   │   └── waypoint-lookup.txt
+│   ├── parse-path-DEPRECATED.py
+│   ├── parse-plan.py
+│   └── parse-waypoints-to-pddl.py
+├── temp
+│   └── planning-domains
+│       ├── domain-2-1.pddl
+│       └── domain21-prob05-move03.pddl
+├── tree.txt
+├── tree2.txt
+├── tree_report
+└── waypoints
+    ├── plan_waypoints.csv
+    └── test.csv
+
+14 directories, 76 files

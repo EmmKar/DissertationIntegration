@@ -7,9 +7,9 @@ import rospkg
 
 ## Get path to the inspection_plan package
 rospack = rospkg.RosPack()
-#waypointsFile = input("Name of waypoint file: " + ".csv")
-waypointsFile = 'test.csv'
-filePath = rospack.get_path('inspection_plan') + '/waypoints/' + waypointsFile
+waypointsFile = input("Name of input waypoint file: ")
+# waypointsFile = 'test.csv'
+filePath = rospack.get_path('inspection_plan') + '/waypoints/' + waypointsFile + ".csv"
 
 ## Orientation is represented as a quaternion, where we have that yaw is rotation around z axis, roll around x and pitch around y, 
 ## and w indicates the amount of rotation which will accur about the axis
@@ -20,8 +20,8 @@ waypoints = pd.read_csv(filePath,
 #save waypoints to file, formatted to easily initialise in PDDL model
 #save waypoints to file, formatted to keep track of which name is 
 #   which waypoint
-pddl_waypoints = open("pddl-waypoints.txt", "w")
-waypoint_lookup = open("waypoint-lookup.txt", "w")
+pddl_waypoints = open("pddl-" + waypointsFile + ".txt", "w")
+waypoint_lookup = open("waypoints-" + waypointsFile + "-lookup.txt", "w")
 for i, x in waypoints['x'].iteritems():
     pddl_waypoints.write("(= (waypoint w{}x) {}) \n".format(i+1, x))
     waypoint_lookup.write("w{}x={}\n".format(i+1, x))
@@ -42,7 +42,7 @@ def test():
 
 mytest = test()
 #print(mytest)
-
+ 
 ## As we are only interested in a 2D plot, we only need x and y points.
 waypoints = waypoints.drop(['z', 'roll', 'pitch', 'yaw', 'w'], axis=1)
 #print(waypoints)

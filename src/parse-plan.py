@@ -18,12 +18,12 @@ class ParseNavigation():
     def __init__(self):
 
         #Specify names of plan file and file with the waypoints that was copied to pddl
-        self.planName = "/pddl/plans/plan16-01-03-test"
-        self.pddlWaypoints = "/src/outputs/waypoint-lookup.txt"
-        self.outputFile = "/src/outputs/parsed-plans/plan16-01-03_waypoints"
-        # self.planName = "/pddl/plans/" + input("Plan file name (incl extension): ")
-        # self.pddlWaypoints = "/src/outputs/" + input("Waypoint dict: ") + ".txt"
-        # self.outputFile = "/waypoints/" + input("What would you like to name your waypoint file (excl extension): ")
+        # self.planName = "/pddl/plans/plan16-01-03-test"
+        # self.pddlWaypoints = "/src/outputs/waypoint-lookup" + ".txt"
+        # self.outputFile = "/src/outputs/parsed-plans/plan16-01-03_waypoints"
+        self.planName = "/pddl/plans/" + input("Provide file name of input plan file (incl extension if it has one): ")
+        self.pddlWaypoints = "/src/outputs/" + input("Provide name of waypoint lookup file (excl extension): ") + ".txt"
+        self.outputFile = "/src/outputs/parsed-plans/" + input("What would you like to name your parsed plan (excl extension): ")
 
         #Get path to project
         self.rospack = rospkg.RosPack()
