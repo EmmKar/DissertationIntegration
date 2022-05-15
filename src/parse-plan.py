@@ -51,9 +51,7 @@ class ParseNavigation():
     def getWpNames(self, lookupFile):
         return dict(x.strip().split('=') for x in lookupFile)
 
-    #Returns a list consisting only of waypoint names per entry
-    #First two coordinates are current waypoint, the latter two are the goal waypoint
-    #Note, empty lines in plan file will result in errors
+    #cleans plan from whitespace and splits information in a step into individual elements
     def getPlanList(self, rawPlan):
         newPlan = []
         finalPlan = []
@@ -88,7 +86,8 @@ class ParseNavigation():
         # print(wpDict)
         for step in plan:
             newPlan.append([float(wpDict.get(wp)) if wp[0] == 'w' else wp for wp in step])
-        #print(newPlan)
+            newPlan.append([wp[1:-1] for wp in step if wp[0]=='w'][0])
+        print("replaceNames>> {}".format(newPlan))
         return newPlan
     
     #Function to add step number to plan, and create dictionary for waypoints
@@ -99,7 +98,7 @@ class ParseNavigation():
         values = [step[1:] for step in plan]
         indexed = list(zip(index, tasks))
 
-        #Create a lookup dictionary for step. Not used, left for backup       
+        #Create a lookup dictionary for step. NOT USED, left for backup       
         stepDict = {}
         for key in indexed:
             # print(key)

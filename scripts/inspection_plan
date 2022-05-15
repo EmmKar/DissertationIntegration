@@ -80,7 +80,7 @@ class InspectionPlan():
     def importWaypointPoses(self):
         # Get file path
         rospack = rospkg.RosPack()
-        waypointFile = input("Name of raw waypoint file (found in waypoints directory, excl extension): \n")
+        waypointFile = input("Name of raw waypoint file (found in waypoints directory, excl extension): ")
         filePath = rospack.get_path('inspection_plan') + \
                     '/waypoints/' + waypointFile + '.csv'
         
@@ -114,6 +114,8 @@ class InspectionPlan():
     def implementPlan(self, length, plan_df):
         # Counter to track which step in plan we're on
         i = 0
+        issues = 0
+        consecutiveIssues = 0
         madeIt = False
 
         # Cycle through the waypoints
@@ -145,39 +147,60 @@ class InspectionPlan():
                 if self.move_base_client.get_state() == 3:
                     rospy.loginfo("Completed step {} of plan".format(str(i)))
                     rospy.loginfo("Moved to waypoint {}".format(str(i)))
+                    consecutiveIssues == 0
                     madeIt = True
                 elif self.move_base_client.get_state() == 1:
                     rospy.logerr("Goal not reached in time limit. Server may be unavailable")
                     madeIt = False
+                    issues += 1
                 elif self.move_base_client.get_state() == 4:
                     rospy.logerr("Robot stuck! Cannot reach waypoint {}. Call for help!".format(str(i)))
                     madeIt = False
+                    issues += 1
                 else: #Something unexpected happened
                     rospy.logerr("New issue: " + 
                                     "\n{} ".format(self.move_base_client.get_goal_status_text()) +
                                     "\nState Number: {}".format(str(self.move_base_client.get_state())))
                     madeIt = False
+                    issues += 1
 
             #The remaining tasks should only be executed if the relevant waypoint has been reached as the plan prescribes. 
             # this may lead to missing readings and inspections if a waypoints has been reached, but this is also where a dynamic
             # integration would be relevant for future work, allowing the robot to pull up the planner if issues arise to get a 
             # new plan. 
             elif plan_df.iloc[i]['task'] == 'inspect' and madeIt == True:
-                rospy.loginfo("Inspecting object...")
                 self.inspectObject(plan_df, i)
-
             elif plan_df.iloc[i]['task'] == 'register-radiation' and madeIt == True:
                 rospy.loginfo("Checking radiation levels...")
                 self.recordRadiation()
+            elif plan_df.iloc[i]['task'] == 'print-report':
+                #Call printReport function to get results of inspection. If this task was reached, the plan was completed to the end (with 
+                # some number of issues), and so stoppedEarly is set as false. 
+                self.printReport(issues, step=i, stoppedEarly=False)
+            elif plan_df.iloc[i]['task'] != 'move' and madeIt == False:
+                rospy.logerr("Cannot perform task number {}: {} because robot is not at waypoint. Moving to task number {}".format(i, plan_df.iloc[i]['task'], i+1))
+            elif plan_df.iloc[i]['task'] == 'move' and consecutiveIssues > 3:
+                #If the robot has been reported stuck for above 3 movement steps, call for a human. The idea is that the human can 
+                # then manually enter to move the robot if it is a room without too high radiation, or use remote, manual control or 
+                # some other strategy to deal with the stuck robot. Then stop trying. 
+                self.callForHuman()
+                #Print the report for the inspection so far. 
+                self.printReport(issues, step=i, stoppedEarly=True)
+                break
             else:
                 rospy.logerr("Unknown task. Please check your plan was parsed correctly")
                 print(plan_df.iloc[i])
 
             i += 1
+        
+        self.printReport(issues, step=i, stoppedEarly=False)
+        return True
 
 
 
     def move(self, posx, posy):
+        rospy.loginfo("Moving...")
+
         # We will cancel the goal if it hasn't been reached within 2 min, as this indicates that something has gone wrong. 
         timeLimit = 120
 
@@ -218,6 +241,7 @@ class InspectionPlan():
     def inspectObject(self, plan_df, index):
         # Here, specific inspection tasks could be called, implemented
         # in new nodes, another function, or otherwise, depending on the specific need.         
+        rospy.loginfo("Inspecting object...")
         rospy.sleep(5)
         rospy.loginfo("Inspected object {}".format(plan_df.iloc[index]['object_type']))
         return
@@ -248,13 +272,82 @@ class InspectionPlan():
         position = record.pose.position
         
         # Save reading and position in array
-        np.append(self.radiationReadings, np.array([[position, radiationReading]]), axis=0)
+        recordList = np.array([[position.x, position.y, position.z, radiationReading]])
+        # print(recordList.shape)
+        self.radiationReadings = np.append(self.radiationReadings, recordList, axis=0)
+        # print(self.radiationReadings)
 
         # Send reading confirmation to terminal
         rospy.loginfo("Radiation recorded: \n")
-        rospy.loginfo(position, radiationReading)
+        print(record)
         
         return
+
+
+    # Print out inspection report. 
+    def printReport(self, num_issues, step, stoppedEarly):
+        #Inspired by tutorial: 
+        #https://www.justintodata.com/generate-reports-with-python/
+        #https://medium.com/codex/create-a-custom-pdf-using-python-219a7e11c78b
+
+        rospy.loginfo("Inspection plan finished")
+        reportName = input("What would you like to name the report? (excl extension)\n")
+        
+        rospack = rospkg.RosPack()
+        filePath = rospack.get_path('inspection_plan') + \
+                          '/reports/' + \
+                           reportName
+        rospy.loginfo("Generating inspection report...")
+        df = pd.DataFrame(self.radiationReadings, columns = ['x', 'y', 'z', 'Radiation Value'])
+        df.sort_values(by=['x'], inplace = True)
+
+        # Create pdf 
+        pdf = fpdf.FPDF()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 16)
+
+        # Add Title
+        pdf.cell(40, 10, 'Inspection Report: {}'.format(reportName)) 
+        pdf.ln(20) #linebreak
+
+        # Transform readings
+        num_cols = df.select_dtypes(include='number').columns
+        df[num_cols] = df[num_cols].round(2)
+        self.outputDFtoPDF(pdf, df)
+        pdf.ln(20)
+
+        #ADD figure of readings here. 
+        pdf.output(reportName + '.pdf', 'F')-
+
+
+    def outputDFtoPDF(self, pdf, df):
+        #Taken from tutorial: https://www.justintodata.com/generate-reports-with-python/
+        # A cell is a rectangular area, possibly framed, which contains some text
+        # Set the width and height of cell
+        table_cell_width = 25
+        table_cell_height = 6
+        # Select a font as Arial, bold, 8
+        pdf.set_font('Arial', 'B', 8)
+        
+        # Loop over to print column names
+        cols = df.columns
+        for col in cols:
+            pdf.cell(table_cell_width, table_cell_height, col, align='C', border=1)
+        # Line break
+        pdf.ln(table_cell_height)
+        # Select a font as Arial, regular, 10
+        pdf.set_font('Arial', '', 10)
+        # Loop over to print each data in the table
+        for row in df.itertuples():
+            for col in cols:
+                value = str(getattr(row, col))
+                pdf.cell(table_cell_width, table_cell_height, value, align='C', border=1)
+            pdf.ln(table_cell_height)
+
+    # example function to call for help. In an actual implementation, this would send a signal to a control room or 
+    # similar, alerting the human operator of the issue. 
+    def callForHuman(self):
+        rospy.loginfo("Called for human assisstance. Stopping plan")
 
 if __name__ == '__main__':
     try:
