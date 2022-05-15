@@ -44,7 +44,7 @@ def callback(data, fileName):
 
     # Create string to be saved to file
     isObject = input('Is this waypoint at an interesting object? (y/n)\n')
-    if isObject:
+    if isObject.lower() == 'y' or isObject.lower() == 'yes':
         dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, True])
     else:
         dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, False])
@@ -82,5 +82,5 @@ def waypoint_recorder(fileName):
 
 if __name__ == '__main__':
     dataFile = input("Type output file name here (excl extension): ") + ".csv"
-    print("Make sure that your )
+    print("If you want robot to end up at start position once plan executed, make sure first waypoint is its initial position. \nPress ctrl+C to exit")
     waypoint_recorder(dataFile)
