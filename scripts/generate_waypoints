@@ -43,7 +43,11 @@ def callback(data, fileName):
     filePath = packagePath + '/waypoints/' + fileName
 
     # Create string to be saved to file
-    dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w])
+    isObject = input('Is this waypoint at an interesting object? (y/n)\n')
+    if isObject:
+        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, True])
+    else:
+        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, False])
     
     # Check if the desired output file already exists
     if os.path.exists(filePath):
@@ -77,6 +81,6 @@ def waypoint_recorder(fileName):
     rospy.spin()
 
 if __name__ == '__main__':
-    dataFile = input("Type output file name here:")+".csv"
-
+    dataFile = input("Type output file name here (excl extension): ") + ".csv"
+    print("Make sure that your )
     waypoint_recorder(dataFile)
