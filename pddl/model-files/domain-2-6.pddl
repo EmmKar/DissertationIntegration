@@ -14,7 +14,7 @@
 
 
 
-(define (domain inspection25)
+(define (domain inspection26)
 
     ;Fluents indicates the use of the numeric fragment of PDDL 
     (:requirements :strips :typing :negative-preconditions :adl :fluents)
@@ -35,7 +35,7 @@
         ;(rob-facing ?o - object)         ;true iff x is a waypoint and the robot is facing x
         (has-inspected ?i - interesting)            ;true iff o is an interesting nuclear reactor object and the robot has inspected object
         (by-interesting ?x - posx ?y - posy ?o - interesting)  ;true iff o is an interesting nuclear reactor object, x is a waypoint, and x is located at o
-        (radiation-registered ?x - posx ?y - posy)
+        (radiation-registered ?c - coordinate)
     )
     
     ;functions
@@ -84,12 +84,12 @@
     )
     
     ;action to register radiation level at waypoint
-    ;action to register radiation level at waypoint
     (:action register-radiation
         :parameters (?x - posx ?y - posy)
         :precondition (and (is-waypoint ?x ?y)
                            (at-waypoint ?x ?y))
-        :effect (radiation-registered ?x ?y)
+        :effect (and (radiation-registered ?x)
+                     (radiation-registered ?y))
     )
     
     ;action to sense radiation

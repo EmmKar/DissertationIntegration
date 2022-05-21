@@ -97,7 +97,7 @@
 
  ;since the coordinates can only be put as passed for the combinations,
                 
-    (:goal (and (forall (?x -posx ?y - posy)
+    (:goal (and (forall (?x - posx ?y - posy)
                     (imply (is-waypoint ?x ?y)
                         (radiation-registered ?x ?y)))  
                 (at-waypoint w1x w1y)

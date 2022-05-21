@@ -1,0 +1,137 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 148
+Aibr Preprocessing
+|F|:83
+|X|:0
+|A|:423
+|P|:0
+|E|:0
+H1 Setup Time (msec): 6
+Setting horizon to:NaN
+Helpful Action Pruning Activated
+Running WA-STAR
+h(n = s_0)=366.58926
+f(n) = 366.58926 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.009) Frontier Size: 0
+Problem Solved
+
+Found Plan:
+0.0: (move w1x w1y w12x w12y)
+1.0: (register-radiation w12x w12y)
+2.0: (move w12x w12y w11x w11y)
+3.0: (register-radiation w11x w11y)
+4.0: (move w11x w11y w8x w8y)
+5.0: (register-radiation w8x w8y)
+6.0: (move w8x w8y w7x w7y)
+7.0: (register-radiation w7x w7y)
+8.0: (move w7x w7y w13x w13y)
+9.0: (register-radiation w13x w13y)
+10.0: (move w13x w13y w12x w12y)
+11.0: (move w12x w12y w11x w11y)
+12.0: (move w11x w11y w20x w20y)
+13.0: (register-radiation w20x w20y)
+14.0: (move w20x w20y w10x w10y)
+15.0: (register-radiation w10x w10y)
+16.0: (move w10x w10y w11x w11y)
+17.0: (move w11x w11y w12x w12y)
+18.0: (move w12x w12y w13x w13y)
+19.0: (move w13x w13y w6x w6y)
+20.0: (register-radiation w6x w6y)
+21.0: (move w6x w6y w5x w5y)
+22.0: (register-radiation w5x w5y)
+23.0: (move w5x w5y w6x w6y)
+24.0: (move w6x w6y w13x w13y)
+25.0: (move w13x w13y w12x w12y)
+26.0: (move w12x w12y w11x w11y)
+27.0: (move w11x w11y w10x w10y)
+28.0: (move w10x w10y w19x w19y)
+29.0: (register-radiation w19x w19y)
+30.0: (move w19x w19y w10x w10y)
+31.0: (move w10x w10y w9x w9y)
+32.0: (register-radiation w9x w9y)
+33.0: (move w9x w9y w10x w10y)
+34.0: (move w10x w10y w19x w19y)
+35.0: (move w19x w19y w16x w16y)
+36.0: (register-radiation w16x w16y)
+37.0: (move w16x w16y w20x w20y)
+38.0: (move w20x w20y w11x w11y)
+39.0: (move w11x w11y w12x w12y)
+40.0: (move w12x w12y w13x w13y)
+41.0: (move w13x w13y w6x w6y)
+42.0: (move w6x w6y w5x w5y)
+43.0: (move w5x w5y w4x w4y)
+44.0: (register-radiation w4x w4y)
+45.0: (move w4x w4y w5x w5y)
+46.0: (move w5x w5y w6x w6y)
+47.0: (move w6x w6y w13x w13y)
+48.0: (move w13x w13y w12x w12y)
+49.0: (move w12x w12y w11x w11y)
+50.0: (move w11x w11y w20x w20y)
+51.0: (move w20x w20y w15x w15y)
+52.0: (register-radiation w15x w15y)
+53.0: (move w15x w15y w16x w16y)
+54.0: (move w16x w16y w17x w17y)
+55.0: (register-radiation w17x w17y)
+56.0: (move w17x w17y w19x w19y)
+57.0: (move w19x w19y w10x w10y)
+58.0: (move w10x w10y w11x w11y)
+59.0: (move w11x w11y w12x w12y)
+60.0: (move w12x w12y w13x w13y)
+61.0: (move w13x w13y w6x w6y)
+62.0: (move w6x w6y w5x w5y)
+63.0: (move w5x w5y w4x w4y)
+64.0: (move w4x w4y w3x w3y)
+65.0: (register-radiation w3x w3y)
+66.0: (move w3x w3y w1x w1y)
+67.0: (register-radiation w1x w1y)
+68.0: (move w1x w1y w4x w4y)
+69.0: (move w4x w4y w5x w5y)
+70.0: (move w5x w5y w6x w6y)
+71.0: (move w6x w6y w13x w13y)
+72.0: (move w13x w13y w14x w14y)
+73.0: (register-radiation w14x w14y)
+74.0: (move w14x w14y w15x w15y)
+75.0: (move w15x w15y w16x w16y)
+76.0: (move w16x w16y w17x w17y)
+77.0: (move w17x w17y w18x w18y)
+78.0: (register-radiation w18x w18y)
+79.0: (move w18x w18y w10x w10y)
+80.0: (move w10x w10y w8x w8y)
+81.0: (move w8x w8y w7x w7y)
+82.0: (move w7x w7y w6x w6y)
+83.0: (move w6x w6y w5x w5y)
+84.0: (move w5x w5y w2x w2y)
+85.0: (register-radiation w2x w2y)
+86.0: (inspect w2x w2y object1)
+87.0: (move w2x w2y w5x w5y)
+88.0: (move w5x w5y w6x w6y)
+89.0: (move w6x w6y w13x w13y)
+90.0: (move w13x w13y w14x w14y)
+91.0: (inspect w14x w14y object2)
+92.0: (move w14x w14y w15x w15y)
+93.0: (move w15x w15y w16x w16y)
+94.0: (move w16x w16y w17x w17y)
+95.0: (move w17x w17y w18x w18y)
+96.0: (inspect w18x w18y object3)
+97.0: (move w18x w18y w19x w19y)
+98.0: (move w19x w19y w10x w10y)
+99.0: (move w10x w10y w11x w11y)
+100.0: (move w11x w11y w12x w12y)
+101.0: (move w12x w12y w13x w13y)
+102.0: (move w13x w13y w6x w6y)
+103.0: (move w6x w6y w5x w5y)
+104.0: (move w5x w5y w4x w4y)
+105.0: (move w4x w4y w3x w3y)
+106.0: (move w3x w3y w1x w1y)
+
+Plan-Length:107
+Metric (Search):180.63277
+Planning Time (msec): 1630
+Heuristic Time (msec): 578
+Search Time (msec): 651
+Expanded Nodes:589
+States Evaluated:3848
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:519
+Number of Duplicates detected:8517

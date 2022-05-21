@@ -2,7 +2,7 @@
 ;objects and waypoints.  
 
 (define (problem inspection06)
-    (:domain inspection25)
+    (:domain inspection26)
     
     ;Objects
     (:objects   object1 object2 object3 - interesting ;Points of interest in the world
@@ -97,9 +97,10 @@
 
  ;since the coordinates can only be put as passed for the combinations,
                 
-    (:goal (and (forall (?x -posx ?y - posy)
-                    (imply (is-waypoint ?x ?y)
-                        (radiation-registered ?x ?y)))  
+    (:goal (and (forall (?x - posx)
+                        (radiation-registered ?x))
+                (forall (?y - posy)
+                        (radiation-registered ?y))
                 (at-waypoint w1x w1y)
                 (forall (?o - interesting)
                         (has-inspected ?o))))
