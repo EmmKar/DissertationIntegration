@@ -1,0 +1,151 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 129
+Aibr Preprocessing
+|F|:84
+|X|:0
+|A|:426
+|P|:0
+|E|:0
+H1 Setup Time (msec): 5
+Setting horizon to:NaN
+Helpful Action Pruning Activated
+Running greedy WA-STAR with hw = 4
+h(n = s_0)=370.6586
+f(n) = 370.6586 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.008) Frontier Size: 0
+Problem Solved
+
+Found Plan:
+0.0: (move w1x w1y w11x w11y)
+1.0: (register-radiation w11x w11y)
+2.0: (move w11x w11y w12x w12y)
+3.0: (register-radiation w12x w12y)
+4.0: (move w12x w12y w7x w7y)
+5.0: (register-radiation w7x w7y)
+6.0: (move w7x w7y w13x w13y)
+7.0: (register-radiation w13x w13y)
+8.0: (move w13x w13y w8x w8y)
+9.0: (register-radiation w8x w8y)
+10.0: (move w8x w8y w11x w11y)
+11.0: (move w11x w11y w20x w20y)
+12.0: (register-radiation w20x w20y)
+13.0: (move w20x w20y w11x w11y)
+14.0: (move w11x w11y w6x w6y)
+15.0: (register-radiation w6x w6y)
+16.0: (move w6x w6y w12x w12y)
+17.0: (move w12x w12y w11x w11y)
+18.0: (move w11x w11y w10x w10y)
+19.0: (register-radiation w10x w10y)
+20.0: (move w10x w10y w11x w11y)
+21.0: (move w11x w11y w12x w12y)
+22.0: (move w12x w12y w13x w13y)
+23.0: (move w13x w13y w6x w6y)
+24.0: (move w6x w6y w5x w5y)
+25.0: (register-radiation w5x w5y)
+26.0: (move w5x w5y w13x w13y)
+27.0: (move w13x w13y w12x w12y)
+28.0: (move w12x w12y w11x w11y)
+29.0: (move w11x w11y w10x w10y)
+30.0: (move w10x w10y w19x w19y)
+31.0: (register-radiation w19x w19y)
+32.0: (move w19x w19y w10x w10y)
+33.0: (move w10x w10y w9x w9y)
+34.0: (register-radiation w9x w9y)
+35.0: (move w9x w9y w8x w8y)
+36.0: (move w8x w8y w7x w7y)
+37.0: (move w7x w7y w6x w6y)
+38.0: (move w6x w6y w5x w5y)
+39.0: (move w5x w5y w4x w4y)
+40.0: (register-radiation w4x w4y)
+41.0: (move w4x w4y w13x w13y)
+42.0: (move w13x w13y w12x w12y)
+43.0: (move w12x w12y w11x w11y)
+44.0: (move w11x w11y w20x w20y)
+45.0: (move w20x w20y w16x w16y)
+46.0: (register-radiation w16x w16y)
+47.0: (move w16x w16y w15x w15y)
+48.0: (register-radiation w15x w15y)
+49.0: (move w15x w15y w20x w20y)
+50.0: (move w20x w20y w11x w11y)
+51.0: (move w11x w11y w12x w12y)
+52.0: (move w12x w12y w13x w13y)
+53.0: (move w13x w13y w6x w6y)
+54.0: (move w6x w6y w5x w5y)
+55.0: (move w5x w5y w4x w4y)
+56.0: (move w4x w4y w3x w3y)
+57.0: (register-radiation w3x w3y)
+58.0: (move w3x w3y w4x w4y)
+59.0: (move w4x w4y w5x w5y)
+60.0: (move w5x w5y w6x w6y)
+61.0: (move w6x w6y w13x w13y)
+62.0: (move w13x w13y w12x w12y)
+63.0: (move w12x w12y w11x w11y)
+64.0: (move w11x w11y w10x w10y)
+65.0: (move w10x w10y w19x w19y)
+66.0: (move w19x w19y w17x w17y)
+67.0: (register-radiation w17x w17y)
+68.0: (move w17x w17y w20x w20y)
+69.0: (move w20x w20y w11x w11y)
+70.0: (move w11x w11y w12x w12y)
+71.0: (move w12x w12y w13x w13y)
+72.0: (move w13x w13y w6x w6y)
+73.0: (move w6x w6y w5x w5y)
+74.0: (move w5x w5y w2x w2y)
+75.0: (register-radiation w2x w2y)
+76.0: (move w2x w2y w5x w5y)
+77.0: (move w5x w5y w6x w6y)
+78.0: (move w6x w6y w13x w13y)
+79.0: (move w13x w13y w14x w14y)
+80.0: (register-radiation w14x w14y)
+81.0: (move w14x w14y w13x w13y)
+82.0: (move w13x w13y w6x w6y)
+83.0: (move w6x w6y w5x w5y)
+84.0: (move w5x w5y w4x w4y)
+85.0: (move w4x w4y w3x w3y)
+86.0: (move w3x w3y w1x w1y)
+87.0: (register-radiation w1x w1y)
+88.0: (move w1x w1y w6x w6y)
+89.0: (move w6x w6y w13x w13y)
+90.0: (move w13x w13y w14x w14y)
+91.0: (open-valve w14x w14y pipe2 valve2)
+92.0: (inspect-pipes w14x w14y pipe2 valve2)
+93.0: (move w14x w14y w13x w13y)
+94.0: (move w13x w13y w6x w6y)
+95.0: (move w6x w6y w5x w5y)
+96.0: (move w5x w5y w2x w2y)
+97.0: (open-valve w2x w2y pipe1 valve1)
+98.0: (inspect-pipes w2x w2y pipe1 valve1)
+99.0: (move w2x w2y w5x w5y)
+100.0: (move w5x w5y w6x w6y)
+101.0: (move w6x w6y w13x w13y)
+102.0: (move w13x w13y w12x w12y)
+103.0: (move w12x w12y w11x w11y)
+104.0: (move w11x w11y w10x w10y)
+105.0: (move w10x w10y w19x w19y)
+106.0: (move w19x w19y w18x w18y)
+107.0: (register-radiation w18x w18y)
+108.0: (move w18x w18y w8x w8y)
+109.0: (move w8x w8y w7x w7y)
+110.0: (move w7x w7y w6x w6y)
+111.0: (move w6x w6y w5x w5y)
+112.0: (move w5x w5y w2x w2y)
+113.0: (close-valve w2x w2y pipe1 valve1)
+114.0: (move w2x w2y w5x w5y)
+115.0: (move w5x w5y w6x w6y)
+116.0: (move w6x w6y w13x w13y)
+117.0: (move w13x w13y w14x w14y)
+118.0: (close-valve w14x w14y pipe2 valve2)
+119.0: (move w14x w14y w5x w5y)
+120.0: (move w5x w5y w1x w1y)
+
+Plan-Length:121
+Metric (Search):284.18793
+Planning Time (msec): 1543
+Heuristic Time (msec): 569
+Search Time (msec): 648
+Expanded Nodes:590
+States Evaluated:3724
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:527
+Number of Duplicates detected:8667

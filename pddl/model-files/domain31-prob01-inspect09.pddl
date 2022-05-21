@@ -1,13 +1,14 @@
 ;Model version 1.5. Movement between and abstract inspection of various
 ;objects and waypoints.  
 
-(define (problem inspection06)
-    (:domain inspection26)
+(define (problem inspection09)
+    (:domain inspection31)
     
     ;Objects
-    (:objects   object1 object2 object3 - interesting ;Points of interest in the world
-                ;Declare objects for coordinate values, one for x and y and up to the
-                ;highest number of waypoints in the problem
+    (:objects   ;interesting objects for inspection
+                pipe1 pipe2 - pipe
+                valve1 valve2 - valve 
+                ;waypoints
                 w1x w2x w3x w4x w5x w6x w7x w8x w9x w10x
                 w11x w12x w13x w14x w15x w16x w17x w18x w19x w20x - posx
                 w1y w2y w3y w4y w5y w6y w7y w8y w9y w10y
@@ -15,6 +16,7 @@
     )
     
     ;Initial State
+    ;Need to set valve to pipe, set all valves to closed. 
     (:init  ;Specify coordinate values (imported from file in misc):
             (= (waypoint w1x) -0.0322999954223632) 
             (= (waypoint w2x) 2.57498836517334) 
@@ -80,9 +82,16 @@
             (is-waypoint w20x w20y) 
 
             ;specify where the inspection objects are located
-            (by-interesting w2x w2y object1)
-            (by-interesting w14x w14y object2)
-            (by-interesting w18x w18y object3)
+            (by-interesting w2x w2y pipe1)
+            (by-interesting w14x w14y pipe2)
+
+            ;specify which valve belongs to which pip
+            (has-valve pipe1 valve1)
+            (has-valve pipe2 valve2)
+
+            ;valves are closed
+            (valve-closed valve2)
+            (valve-closed valve1)
 
             ;specify where the robot starts
             (at-waypoint w1x w1y)
@@ -99,7 +108,9 @@
                         (radiation-registered ?y))
                 (at-waypoint w1x w1y)
                 (forall (?o - interesting)
-                        (has-inspected ?o))))
+                        (has-inspected ?o))
+                (forall (?v - valve)
+                        (valve-closed ?v))))
 
     
     (:metric minimize (total-cost))  
