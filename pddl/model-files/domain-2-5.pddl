@@ -21,6 +21,7 @@
 
     (:types
         coordinate interesting - object
+
         posx posy - coordinate ;for readability i will simply use waypoint type where a waypoint is treated
                                 ;and this is mainly here to make clear that a waypoint consists of x and y coordinates
                                 ;and that they are not the same. This is a bit of misuse of the language.
@@ -83,6 +84,7 @@
     )
     
     ;action to register radiation level at waypoint
+    
     (:action register-radiation
         :parameters (?x - posx ?y - posy)
         :precondition (and (is-waypoint ?x ?y)

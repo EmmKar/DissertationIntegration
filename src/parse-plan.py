@@ -61,6 +61,7 @@ class ParseNavigation():
         for step in rawPlan:
             # for x in actions:
             #     step = step.replace(x, '')
+            step = step.lower()
             newPlan.append(step.strip('\n()  '))
         
         # remove current waypoints from plan
@@ -86,7 +87,7 @@ class ParseNavigation():
         # print(wpDict)
         for step in plan:
             newPlan.append([float(wpDict.get(wp)) if wp[0] == 'w' else wp for wp in step])
-            newPlan.append([wp[1:-1] for wp in step if wp[0]=='w'][0])
+            # newPlan.append([wp[1:-1] for wp in step if wp[0]=='w'][0])
         print("replaceNames>> {}".format(newPlan))
         return newPlan
     
@@ -131,7 +132,8 @@ class ParseNavigation():
 
     #Function to create a path plot
     def printPath(self, plan):
-        path = [x[2] for x in plan if x[1]=='move']
+        path = [x[2] for x in plan] #if x[1]=='move']
+        print(path)
         df = pd.DataFrame(path)
         print(df)
 
@@ -142,7 +144,7 @@ class ParseNavigation():
         starty = df.loc[0][1]
 
         plotName = input("What would you like to name your figure?\n")
-        plt.figure()
+        plt.figure(figsize=(9,9))
         plt.title("Robot Path")
         plt.scatter(startx, starty, c='green', zorder=3)
         plt.plot(df[0], df[1], '.', color='orange', zorder=2)

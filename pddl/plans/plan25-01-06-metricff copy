@@ -1,0 +1,112 @@
+
+ff: parsing domain file
+domain 'INSPECTION25' defined
+ ... done.
+ff: parsing problem file
+problem 'INSPECTION06' defined
+ ... done.
+
+
+
+ff: search configuration is Enforced Hill-Climbing, then A*epsilon with weight 5.
+Metric is ((1.00*[RF0](TOTAL-COST)) - () + 0.00)
+COST MINIMIZATION DONE (WITH cost-minimizing relaxed plans).
+
+Cueing down from goal distance:   42 into depth [1]
+                                  41            [1][2]
+                                  40            [1]
+                                  39            [1]
+                                  38            [1]
+                                  37            [1]
+                                  36            [1]
+                                  35            [1]
+                                  34            [1]
+                                  33            [1]
+                                  32            [1]
+                                  31            [1]
+                                  30            [1]
+                                  29            [1]
+                                  28            [1]
+                                  27            [1]
+                                  26            [1]
+                                  25            [1]
+                                  24            [1]
+                                  23            [1]
+                                  22            [1]
+                                  21            [1]
+                                  20            [1]
+                                  19            [1]
+                                  18            [1]
+                                  17            [1]
+                                  16            [1]
+                                  15            [1]
+                                  14            [1]
+                                  13            [1]
+                                  12            [1]
+                                  11            [1]
+                                  10            [1]
+                                   9            [1]
+                                   8            [1]
+                                   7            [1]
+                                   6            [1]
+                                   5            [1]
+                                   4            [1]
+                                   3            [1]
+                                   2            [1]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: REGISTER-RADIATION W1X W1Y
+        1: MOVE W1X W1Y W20X W20Y
+        2: REGISTER-RADIATION W20X W20Y
+        3: MOVE W20X W20Y W19X W19Y
+        4: REGISTER-RADIATION W19X W19Y
+        5: MOVE W19X W19Y W17X W17Y
+        6: REGISTER-RADIATION W17X W17Y
+        7: MOVE W17X W17Y W16X W16Y
+        8: REGISTER-RADIATION W16X W16Y
+        9: MOVE W16X W16Y W15X W15Y
+       10: REGISTER-RADIATION W15X W15Y
+       11: MOVE W15X W15Y W13X W13Y
+       12: REGISTER-RADIATION W13X W13Y
+       13: MOVE W13X W13Y W12X W12Y
+       14: REGISTER-RADIATION W12X W12Y
+       15: MOVE W12X W12Y W11X W11Y
+       16: REGISTER-RADIATION W11X W11Y
+       17: MOVE W11X W11Y W10X W10Y
+       18: REGISTER-RADIATION W10X W10Y
+       19: MOVE W10X W10Y W9X W9Y
+       20: REGISTER-RADIATION W9X W9Y
+       21: MOVE W9X W9Y W8X W8Y
+       22: REGISTER-RADIATION W8X W8Y
+       23: MOVE W8X W8Y W7X W7Y
+       24: REGISTER-RADIATION W7X W7Y
+       25: MOVE W7X W7Y W6X W6Y
+       26: REGISTER-RADIATION W6X W6Y
+       27: MOVE W6X W6Y W5X W5Y
+       28: REGISTER-RADIATION W5X W5Y
+       29: MOVE W5X W5Y W4X W4Y
+       30: REGISTER-RADIATION W4X W4Y
+       31: MOVE W4X W4Y W3X W3Y
+       32: REGISTER-RADIATION W3X W3Y
+       33: MOVE W3X W3Y W18X W18Y
+       34: REGISTER-RADIATION W18X W18Y
+       35: INSPECT W18X W18Y OBJECT3
+       36: MOVE W18X W18Y W14X W14Y
+       37: REGISTER-RADIATION W14X W14Y
+       38: INSPECT W14X W14Y OBJECT2
+       39: MOVE W14X W14Y W2X W2Y
+       40: REGISTER-RADIATION W2X W2Y
+       41: INSPECT W2X W2Y OBJECT1
+       42: MOVE W2X W2Y W1X W1Y
+plan cost: 190.155289
+
+time spent:    0.00 seconds instantiating 8023 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 63 facts and 423 actions
+               0.00 seconds creating final representation with 63 relevant facts, 1 relevant fluents
+               0.00 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.01 seconds searching, evaluating 258 states, to a max depth of 2
+               0.01 seconds total time
+

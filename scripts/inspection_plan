@@ -13,6 +13,7 @@ import actionlib
 import rospkg
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 from geometry_msgs.msg import Pose, Point, Quaternion, Twist
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal 
@@ -116,7 +117,7 @@ class InspectionPlan():
         i = 0
         issues = 0
         consecutiveIssues = 0
-        madeIt = False
+        madeIt = True
 
         # Cycle through the waypoints
         while i < length and not rospy.is_shutdown():
@@ -146,7 +147,7 @@ class InspectionPlan():
                 # Determine if movement was successful (see notes for definitions)
                 if self.move_base_client.get_state() == 3:
                     rospy.loginfo("Completed step {} of plan".format(str(i)))
-                    rospy.loginfo("Moved to waypoint {}".format(str(i)))
+                    # rospy.loginfo("Moved to waypoint {}".format(str(i)))
                     consecutiveIssues == 0
                     madeIt = True
                 elif self.move_base_client.get_state() == 1:
@@ -193,7 +194,8 @@ class InspectionPlan():
 
             i += 1
         
-        self.printReport(issues, step=i, stoppedEarly=False)
+        # self.printReport(issues, step=i, stoppedEarly=False)
+        self.plotRadiation()
         return True
 
 
@@ -252,12 +254,6 @@ class InspectionPlan():
     # topic type is gazebo_radiation_plugins/Simulated_Radiation_Msg
     # COULD make this a separate node later
     def recordRadiation(self):
-        # Launch a node to subscribe to the radiation readings. 
-        # rospy.init_node('radiationRecorder', anonymous=True)
-
-        # Create subscriber
-        # rospy.Subscriber('/radiation_sensor_plugin/sensor_0', radiation_msg, )
-
         # radiation message has form:
         #       Header header
         #       float32 value
@@ -284,6 +280,32 @@ class InspectionPlan():
         return
 
 
+
+    def plotRadiation(self):
+        x = self.radiationReadings[0]
+        y = self.radiationReadings[1]
+        R = self.radiationReadings[3]
+        print(x, y, R)
+        print(self.radiationReadings)
+
+        plotName = input("What would you like to name your figure?\n")
+        plt.figure(figsize=(9,9))
+        plt.title("Radiation Readings")
+        c = plt.pcolormesh(x, y, R)
+        fig.colorbar(c)
+        plt.scatter(startx, starty, c='green', zorder=3)
+        plt.plot(df[0], df[1], '.', color='orange', zorder=2)
+        plt.quiver(df[0][:-1], df[1][:-1], u, v, scale_units='xy', angles='xy', scale=1, width=0.002, headwidth=9, headlength=10, zorder=1)
+        plt.ylim(ymax=10, ymin=-10)
+        plt.xlim(xmax=10, xmin=-10)
+        plt.xticks(range(-9,10,3))
+        plt.yticks(range(-9,10,3))
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.savefig(self.projectPath + "/src/figures/" + plotName + ".png")
+        plt.show()
+
+
     # Print out inspection report. 
     def printReport(self, num_issues, step, stoppedEarly):
         #Inspired by tutorial: 
@@ -305,7 +327,7 @@ class InspectionPlan():
 
 
     def outputDFtoPDF(self, pdf, df):
-
+        return
 
     # example function to call for help. In an actual implementation, this would send a signal to a control room or 
     # similar, alerting the human operator of the issue. 
