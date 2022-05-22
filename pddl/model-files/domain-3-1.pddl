@@ -24,7 +24,7 @@
         posx posy - coordinate
         vessel pipe wall control-box - interesting
         valve vessel-switch - control
-        toggle-vessel - vessel
+        toggle-vessel regular-vessel - vessel
     )
 
     ;predicates - truth statements about the current state
@@ -34,9 +34,12 @@
         (has-passed ?x - posx ?y - posy)              ;true iff (x, y) is a waypoint nad the robot has previously passed x
         (has-inspected ?i - interesting)            ;true iff o is an interesting nuclear reactor object and the robot has inspected object
         (by-interesting ?x - posx ?y - posy ?o - interesting)  ;true iff o is an interesting nuclear reactor object, x is a waypoint, and x is located at o
+        (by-control ?x - posx ?y - posy ?c - control)
         (radiation-registered ?c - coordinate) ;tracks if radiation has been registered
         (valve-closed ?v - valve) ;tracks if a valve is closed
         (has-valve ?p - pipe ?v - valve) ;tracks if a valve is connected to a pipe
+        (vessel-off ?tv - toggle-vessel)
+        (switch-connected ?vs - vessel-switch ?tv - toggle-vessel)
     )
     
     ;functions
@@ -84,6 +87,62 @@
     ;     :effect (and (has-inspected ?i))
     ; )
 
+    (:action switch-on
+        :parameters (?x - posx ?y - posy ?vs - vessel-switch ?tv - toggle-vessel)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-control ?x ?y ?vs)
+                           (switch-connected ?vs ?tv)
+                           (vessel-off ?tv))
+        :effect (not (vessel-off ?tv))
+    )
+
+    
+    (:action switch-off
+        :parameters (?x - posx ?y - posy ?vs - vessel-switch ?tv - toggle-vessel)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-control ?x ?y ?vs)
+                           (switch-connected ?vs ?tv)
+                           (not (vessel-off ?tv)))
+        :effect (vessel-off ?tv)
+    )
+
+    (:action inspect-toggle-vessel
+        :parameters (?x - posx ?y - posy ?tv - toggle-vessel)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-interesting ?x ?y ?tv)
+                           (vessel-off ?tv))
+        :effect (has-inspected ?tv)
+    )
+    
+
+    (:action inspect-wall
+        :parameters (?x - posx ?y - posy ?w - wall)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-interesting ?x ?y ?w))
+        :effect (has-inspected ?w)
+    )    
+
+    (:action inspect-vessel
+        :parameters (?x - posx ?y - posy ?v - regular-vessel)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-interesting ?x ?y ?v))
+        :effect (has-inspected ?v)
+    )
+    
+
+    (:action read-pressure
+        :parameters (?x - posx ?y - posy ?b - control-box)
+        :precondition (and (is-waypoint ?x ?y)
+                           (at-waypoint ?x ?y)
+                           (by-interesting ?x ?y ?b))
+        :effect (has-inspected ?b)
+    )
+
     (:action open-valve
         ;we have a valve
         :parameters (?x - posx ?y - posy ?p - pipe ?v - valve)
@@ -106,7 +165,7 @@
                            (not (valve-closed ?v)))
         :effect (valve-closed ?v)
     )
-
+    
     ;action to inspect pipes
     (:action inspect-pipes
         ;we have a waypoint x and a pipe p
@@ -137,7 +196,3 @@
     
     
 )
-
-; NOTES:
-;   - In the numeric fragment of PDDL all functions are number valued, so the 
-;
