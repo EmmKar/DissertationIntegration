@@ -1,5 +1,5 @@
-;Model version 1.5. Movement between and abstract inspection of various
-;objects and waypoints.  
+;Model version 3.1. Inspection with all object types. 
+; Objects are arbitrarily defined. 
 
 (define (problem inspection10)
     (:domain inspection31)
