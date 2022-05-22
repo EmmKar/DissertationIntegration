@@ -15,7 +15,7 @@ outputPath = rospack.get_path('inspection_plan') + "/src/outputs/"
 ## Orientation is represented as a quaternion, where we have that yaw is rotation around z axis, roll around x and pitch around y, 
 ## and w indicates the amount of rotation which will accur about the axis
 waypoints = pd.read_csv(inputPath,
-                        names = ['x', 'y', 'z', 'roll', 'pitch', 'yaw', 'w', 'isInteresting'])
+                        names = ['x', 'y', 'z', 'roll', 'pitch', 'yaw', 'w', 'objectName', 'isInteresting'])
 #print(waypoints)
 
 #save waypoints to a file, formatted to easily initialise in PDDL model
@@ -39,28 +39,40 @@ for i, y in waypoints['y'].iteritems():
 for i, x in waypoints['x'].iteritems():
     pddl_waypoints.write("(is-waypoint w{}x w{}y) \n".format(i+1, i+1))
 
+for i, x in waypoints['x'].iteritems():
+    pddl_waypoints.write("w{}x ".format(i+1, i+1))
+    if (i+1) % 10 == 0:
+        pddl_waypoints.write("\n")
+pddl_waypoints.write(" - posx\n")
+for i, x in waypoints['x'].iteritems():
+    pddl_waypoints.write("w{}y ".format(i+1, i+1))
+    if (i+1) % 10 == 0:
+        pddl_waypoints.write("\n")
+pddl_waypoints.write(" - posy\n")
+
 #Format PDDL code to init interesting objects
 num = 0
 for i, x in waypoints['x'].iteritems():
     if waypoints.iloc[i]['isInteresting'] == True:
         num += 1
-        pddl_waypoints.write("(by-interesting w{}x w{}y object{})\n".format(i+1, i+1, num))
+        objectName = waypoints.iloc[i]['objectName']
+        pddl_waypoints.write("(by-interesting w{}x w{}y {})\n".format(i+1, i+1, objectName))
 
 pddl_waypoints.close()
 waypoint_lookup.close()
 
 
 
-def test():
-    position = waypoints.drop(['roll', 'pitch', 'yaw', 'w'], axis=1)
-    orientation = waypoints.drop(['x', 'y', 'z'], axis=1)
-    return position, orientation
+# def test():
+#     position = waypoints.drop(['roll', 'pitch', 'yaw', 'w'], axis=1)
+#     orientation = waypoints.drop(['x', 'y', 'z'], axis=1)
+#     return position, orientation
 
-mytest = test()
+# mytest = test()
 #print(mytest)
  
 ## As we are only interested in a 2D plot, we only need x and y points.
-waypoints = waypoints.drop(['z', 'roll', 'pitch', 'yaw', 'w'], axis=1)
+# waypoints = waypoints.drop(['z', 'roll', 'pitch', 'yaw', 'w'], axis=1)
 #print(waypoints)
 
 create_figure = input("Would you like to plot these waypoints? (y/n) ")

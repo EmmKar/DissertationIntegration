@@ -1,0 +1,91 @@
+Domain parsed
+Problem parsed
+Grounding..
+Grounding Time: 112
+Aibr Preprocessing
+|F|:60
+|X|:0
+|A|:240
+|P|:0
+|E|:0
+AIBR selected
+Wrong setting for break-ties. Arbitrary tie breaking
+Setting horizon to:NaN
+Helpful Action Pruning Activated
+Running WA-STAR
+h(n = s_0)=209.0
+f(n) = 209.0 (Expanded Nodes: 0, Evaluated States: 0, Time: 0.006) Frontier Size: 0
+f(n) = 225.47748 (Expanded Nodes: 4, Evaluated States: 31, Time: 0.152) Frontier Size: 27
+f(n) = 247.91692 (Expanded Nodes: 16, Evaluated States: 121, Time: 0.341) Frontier Size: 103
+f(n) = 258.65573 (Expanded Nodes: 45, Evaluated States: 335, Time: 0.678) Frontier Size: 276
+f(n) = 259.84613 (Expanded Nodes: 61, Evaluated States: 431, Time: 0.829) Frontier Size: 352
+f(n) = 260.21475 (Expanded Nodes: 69, Evaluated States: 501, Time: 0.915) Frontier Size: 409
+f(n) = 260.79578 (Expanded Nodes: 73, Evaluated States: 513, Time: 0.929) Frontier Size: 413
+f(n) = 268.2984 (Expanded Nodes: 81, Evaluated States: 521, Time: 0.931) Frontier Size: 403
+f(n) = 270.23367 (Expanded Nodes: 105, Evaluated States: 893, Time: 1.457) Frontier Size: 724
+f(n) = 270.7293 (Expanded Nodes: 153, Evaluated States: 1637, Time: 2.501) Frontier Size: 1372
+f(n) = 272.41608 (Expanded Nodes: 161, Evaluated States: 1761, Time: 2.669) Frontier Size: 1480
+f(n) = 272.72498 (Expanded Nodes: 225, Evaluated States: 1953, Time: 2.86) Frontier Size: 1544
+f(n) = 273.09363 (Expanded Nodes: 241, Evaluated States: 2115, Time: 3.079) Frontier Size: 1679
+f(n) = 274.99872 (Expanded Nodes: 249, Evaluated States: 2139, Time: 3.12) Frontier Size: 1689
+f(n) = 276.7507 (Expanded Nodes: 281, Evaluated States: 2187, Time: 3.162) Frontier Size: 1673
+f(n) = 277.11935 (Expanded Nodes: 297, Evaluated States: 2259, Time: 3.26) Frontier Size: 1721
+f(n) = 278.48636 (Expanded Nodes: 305, Evaluated States: 2283, Time: 3.295) Frontier Size: 1729
+f(n) = 279.078 (Expanded Nodes: 433, Evaluated States: 3729, Time: 5.075) Frontier Size: 2919
+-------------Time: 10s ; Expanded Nodes: 865 (Avg-Speed 86.0 n/s); Evaluated States: 7600
+f(n) = 279.1137 (Expanded Nodes: 1440, Evaluated States: 11509, Time: 14.57) Frontier Size: 8802
+f(n) = 279.9689 (Expanded Nodes: 1456, Evaluated States: 11757, Time: 14.884) Frontier Size: 9018
+f(n) = 280.16895 (Expanded Nodes: 1600, Evaluated States: 13149, Time: 16.604) Frontier Size: 10106
+f(n) = 280.31354 (Expanded Nodes: 1616, Evaluated States: 13261, Time: 16.74) Frontier Size: 10186
+f(n) = 281.04718 (Expanded Nodes: 1648, Evaluated States: 13309, Time: 16.769) Frontier Size: 10169
+f(n) = 281.06897 (Expanded Nodes: 1680, Evaluated States: 13633, Time: 17.16) Frontier Size: 10445
+f(n) = 281.1773 (Expanded Nodes: 1744, Evaluated States: 14366, Time: 18.071) Frontier Size: 11046
+f(n) = 281.23035 (Expanded Nodes: 1800, Evaluated States: 15118, Time: 19.029) Frontier Size: 11694
+f(n) = 281.41583 (Expanded Nodes: 1808, Evaluated States: 15126, Time: 19.032) Frontier Size: 11686
+f(n) = 281.5917 (Expanded Nodes: 1824, Evaluated States: 15174, Time: 19.094) Frontier Size: 11695
+-------------Time: 20s ; Expanded Nodes: 1909 (Avg-Speed 95.0 n/s); Evaluated States: 15985
+Problem Solved
+
+Found Plan:
+0.0: (move w1x w1y w2x w2y)
+1.0: (register-radiation w2x w2y)
+2.0: (move w2x w2y w3x w3y)
+3.0: (register-radiation w3x w3y)
+4.0: (move w3x w3y w4x w4y)
+5.0: (register-radiation w4x w4y)
+6.0: (move w4x w4y w5x w5y)
+7.0: (register-radiation w5x w5y)
+8.0: (move w5x w5y w11x w11y)
+9.0: (register-radiation w11x w11y)
+10.0: (move w11x w11y w10x w10y)
+11.0: (register-radiation w10x w10y)
+12.0: (move w10x w10y w9x w9y)
+13.0: (register-radiation w9x w9y)
+14.0: (move w9x w9y w8x w8y)
+15.0: (register-radiation w8x w8y)
+16.0: (move w8x w8y w12x w12y)
+17.0: (register-radiation w12x w12y)
+18.0: (move w12x w12y w13x w13y)
+19.0: (register-radiation w13x w13y)
+20.0: (move w13x w13y w14x w14y)
+21.0: (register-radiation w14x w14y)
+22.0: (move w14x w14y w15x w15y)
+23.0: (register-radiation w15x w15y)
+24.0: (move w15x w15y w1x w1y)
+25.0: (register-radiation w1x w1y)
+26.0: (move w1x w1y w8x w8y)
+27.0: (move w8x w8y w6x w6y)
+28.0: (register-radiation w6x w6y)
+29.0: (move w6x w6y w7x w7y)
+30.0: (register-radiation w7x w7y)
+
+Plan-Length:31
+Metric (Search):195.67706
+Planning Time (msec): 21955
+Heuristic Time (msec): 21250
+Search Time (msec): 21398
+Expanded Nodes:2034
+States Evaluated:17158
+Fixed constraint violations during search (zero-crossing):0
+Number of Dead-Ends detected:1729
+Number of Duplicates detected:15370

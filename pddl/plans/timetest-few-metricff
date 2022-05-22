@@ -1,0 +1,11 @@
+
+ff: parsing domain file
+domain 'INSPECTION31' defined
+ ... done.
+ff: parsing problem file
+problem 'FULL-INSPECTION' defined
+ ... done.
+
+
+predicate SWITCH-CONNECTED is declared to use unknown or empty type SWITCH
+

@@ -172,7 +172,6 @@ class InspectionPlan():
             elif plan_df.iloc[i]['task'] == 'inspect' and madeIt == True:
                 self.inspectObject(plan_df, i)
             elif plan_df.iloc[i]['task'] == 'register-radiation' and madeIt == True:
-                rospy.loginfo("Checking radiation levels...")
                 self.recordRadiation()
             elif plan_df.iloc[i]['task'] == 'print-report':
                 #Call printReport function to get results of inspection. If this task was reached, the plan was completed to the end (with 
@@ -240,14 +239,19 @@ class InspectionPlan():
     
 
 
-    def inspectObject(self, plan_df, index):
-        # Here, specific inspection tasks could be called, implemented
-        # in new nodes, another function, or otherwise, depending on the specific need.         
-        rospy.loginfo("Inspecting object...")
-        rospy.sleep(5)
-        rospy.loginfo("Inspected object {}".format(plan_df.iloc[index]['object_type']))
-        return
+    # def inspectObject(self, plan_df, index):
+    #     # Here, specific inspection tasks could be called, implemented
+    #     # in new nodes, another function, or otherwise, depending on the specific need.         
+    #     rospy.loginfo("Inspecting object...")
+    #     rospy.sleep(5)
+    #     rospy.loginfo("Inspected object {}".format(plan_df.iloc[index]['object_type']))
+    #     return
     
+    def switchOn():
+        rospy.loginfo("Switching on vessel...")
+        rospy.sleep(5)
+        rospy.loginfo("Switched on vessel.")
+        return
 
 
     # subscribe to topic: /radiation_sensor_plugin/sensor_0. 
@@ -260,6 +264,10 @@ class InspectionPlan():
         #       geometry_msgs/Pose pose
         #       string type
         # see also report
+
+        rospy.loginfo("Checking radiation levels...")
+
+
         record = rospy.wait_for_message('/radiation_sensor_plugin/sensor_0', radiation_msg)
 
 
@@ -327,6 +335,9 @@ class InspectionPlan():
 
 
     def outputDFtoPDF(self, pdf, df):
+        #I wanted to have the report objects put into a single pdf file which would then be the report for the inspection sequence, 
+        # however I ran out of time before I could implement this. The idea was to use latex code, either manually written to a file or 
+        # created using a templating package such as jinja2. 
         return
 
     # example function to call for help. In an actual implementation, this would send a signal to a control room or 

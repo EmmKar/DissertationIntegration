@@ -20,11 +20,12 @@
     (:requirements :strips :typing :negative-preconditions :adl :fluents)
 
     (:types
-        coordinate interesting control - object
-        posx posy - coordinate
-        vessel pipe wall control-box - interesting
-        valve vessel-switch - control
         toggle-vessel regular-vessel - vessel
+        switch valve - control
+        vessel pipe wall box - interesting
+        posx posy - coordinate
+        coordinate interesting control - object
+
     )
 
     ;predicates - truth statements about the current state
@@ -39,7 +40,7 @@
         (valve-closed ?v - valve) ;tracks if a valve is closed
         (has-valve ?p - pipe ?v - valve) ;tracks if a valve is connected to a pipe
         (vessel-off ?tv - toggle-vessel)
-        (switch-connected ?vs - vessel-switch ?tv - toggle-vessel)
+        (switch-connected ?vs - switch ?tv - toggle-vessel)
     )
     
     ;functions
@@ -88,7 +89,7 @@
     ; )
 
     (:action switch-on
-        :parameters (?x - posx ?y - posy ?vs - vessel-switch ?tv - toggle-vessel)
+        :parameters (?x - posx ?y - posy ?vs - switch ?tv - toggle-vessel)
         :precondition (and (is-waypoint ?x ?y)
                            (at-waypoint ?x ?y)
                            (by-control ?x ?y ?vs)
@@ -99,7 +100,7 @@
 
     
     (:action switch-off
-        :parameters (?x - posx ?y - posy ?vs - vessel-switch ?tv - toggle-vessel)
+        :parameters (?x - posx ?y - posy ?vs - switch ?tv - toggle-vessel)
         :precondition (and (is-waypoint ?x ?y)
                            (at-waypoint ?x ?y)
                            (by-control ?x ?y ?vs)
@@ -136,7 +137,7 @@
     
 
     (:action read-pressure
-        :parameters (?x - posx ?y - posy ?b - control-box)
+        :parameters (?x - posx ?y - posy ?b - box)
         :precondition (and (is-waypoint ?x ?y)
                            (at-waypoint ?x ?y)
                            (by-interesting ?x ?y ?b))
