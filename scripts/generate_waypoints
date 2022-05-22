@@ -45,9 +45,10 @@ def callback(data, fileName):
     # Create string to be saved to file
     isObject = input('Is this waypoint at an interesting object? (y/n)\n')
     if isObject.lower() == 'y' or isObject.lower() == 'yes':
-        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, True])
+        objectType = input('Please give the object name: ')
+        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, objectType, True])
     else:
-        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, False])
+        dataString = ",".join(str(e) for e in [position.x, position.y, position.z, orient.x, orient.y, orient.z, orient.w, "waypoint", False])
     
     # Check if the desired output file already exists
     if os.path.exists(filePath):
@@ -71,7 +72,7 @@ def waypoint_recorder(fileName):
     # anonymous=True flag means that rospy will choose a unique
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously - from tutorial.
-    rospy.init_node('waypointRecorder', anonymous=True)
+    rospy.init_node('generate_waypoints', anonymous=True)
     
     # this subscribes to the /move_base_simple/goal topic, which is of type PoseStamped, 
     # and when messages are recieved, callback is invoked with the message as its first arguement. 
