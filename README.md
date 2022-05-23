@@ -27,7 +27,7 @@ See users and maintenance manuals in report appendixes for instructions on how t
     - domain32-prob* problem files to go with domain-3-2. These should work, at least they did for me. The output files from running domain32-prob01-objects are available in the package.
     - there are more files used in the development of the model in DEV-BACKUPS, but they are very old versions. I started using github for versioning rather than extensive backupping. 
     - **plans**: plans found (and not found) when running domain-problem combinations through planners. The first number in their name indicate the domain, the second the problem version, and it is indicated which planner was used. Timetest files provide the data used for the table in the report.
-- reports:
+- **reports**:
     - stores radiation reports outputted from successful plan executions (and now also failed). The file contained within is the report from planning problem 32-01-objects, where all objects were inspected, and radiation measured underway. 
     - 
 
