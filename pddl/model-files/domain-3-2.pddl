@@ -14,7 +14,7 @@
 
 
 
-(define (domain inspection31)
+(define (domain inspection32)
 
     ;Fluents indicates the use of the numeric fragment of PDDL 
     (:requirements :strips :typing :negative-preconditions :adl :fluents :action-costs)

@@ -7,5 +7,79 @@ problem 'FULL-INSPECTION' defined
  ... done.
 
 
-predicate SWITCH-CONNECTED is declared to use unknown or empty type SWITCH
+
+ff: search configuration is Enforced Hill-Climbing, then A*epsilon with weight 5.
+Metric is ((1.00*[RF0](TOTAL-COST)) - () + 0.00)
+COST MINIMIZATION DONE (WITH cost-minimizing relaxed plans).
+
+Cueing down from goal distance:   29 into depth [1]
+                                  28            [1]
+                                  27            [1]
+                                  26            [1]
+                                  25            [1]
+                                  24            [1]
+                                  23            [1]
+                                  22            [1]
+                                  21            [1]
+                                  20            [1]
+                                  19            [1]
+                                  18            [1]
+                                  17            [1]
+                                  16            [1]
+                                  15            [1]
+                                  14            [1]
+                                  13            [1]
+                                  12            [1]
+                                  11            [1]
+                                  10            [1]
+                                   9            [1]
+                                   8            [1]
+                                   7            [1]
+                                   6            [1]
+                                   5            [1]
+                                   4            [1]
+                                   3            [1]
+                                   2            [1]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: REGISTER-RADIATION W1X W1Y
+        1: MOVE W1X W1Y W15X W15Y
+        2: REGISTER-RADIATION W15X W15Y
+        3: MOVE W15X W15Y W14X W14Y
+        4: REGISTER-RADIATION W14X W14Y
+        5: MOVE W14X W14Y W13X W13Y
+        6: REGISTER-RADIATION W13X W13Y
+        7: MOVE W13X W13Y W12X W12Y
+        8: REGISTER-RADIATION W12X W12Y
+        9: MOVE W12X W12Y W11X W11Y
+       10: REGISTER-RADIATION W11X W11Y
+       11: MOVE W11X W11Y W10X W10Y
+       12: REGISTER-RADIATION W10X W10Y
+       13: MOVE W10X W10Y W9X W9Y
+       14: REGISTER-RADIATION W9X W9Y
+       15: MOVE W9X W9Y W8X W8Y
+       16: REGISTER-RADIATION W8X W8Y
+       17: MOVE W8X W8Y W7X W7Y
+       18: REGISTER-RADIATION W7X W7Y
+       19: MOVE W7X W7Y W6X W6Y
+       20: REGISTER-RADIATION W6X W6Y
+       21: MOVE W6X W6Y W5X W5Y
+       22: REGISTER-RADIATION W5X W5Y
+       23: MOVE W5X W5Y W4X W4Y
+       24: REGISTER-RADIATION W4X W4Y
+       25: MOVE W4X W4Y W3X W3Y
+       26: REGISTER-RADIATION W3X W3Y
+       27: MOVE W3X W3Y W2X W2Y
+       28: REGISTER-RADIATION W2X W2Y
+plan cost: 84.113228
+
+time spent:    0.00 seconds instantiating 3390 easy, 0 hard action templates
+               0.01 seconds reachability analysis, yielding 60 facts and 240 actions
+               0.00 seconds creating final representation with 60 relevant facts, 1 relevant fluents
+               0.00 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.00 seconds searching, evaluating 135 states, to a max depth of 1
+               0.01 seconds total time
 

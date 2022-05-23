@@ -1,0 +1,195 @@
+
+ff: parsing domain file
+domain 'INSPECTION32' defined
+ ... done.
+ff: parsing problem file
+problem 'FULL-INSPECTION' defined
+ ... done.
+
+
+translating negated cond for predicate VESSEL-OFF
+translating negated cond for predicate VALVE-CLOSED
+
+ff: search configuration is Enforced Hill-Climbing, then A*epsilon with weight 5.
+Metric is ((1.00*[RF0](TOTAL-COST)) - () + 0.00)
+COST MINIMIZATION DONE (WITH cost-minimizing relaxed plans).
+
+Cueing down from goal distance:   69 into depth [1]
+                                  68            [1][2]
+                                  67            [1][2]
+                                  66            [1]
+                                  65            [1][2]
+                                  64            [1][2]
+                                  63            [1]
+                                  62            [1]
+                                  61            [1][2]
+                                  60            [1]
+                                  59            [1]
+                                  58            [1][2]
+                                  57            [1]
+                                  56            [1]
+                                  55            [1][2]
+                                  54            [1]
+                                  53            [1]
+                                  52            [1][2]
+                                  51            [1]
+                                  50            [1]
+                                  49            [1][2]
+                                  48            [1]
+                                  47            [1]
+                                  46            [1][2]
+                                  45            [1]
+                                  44            [1]
+                                  43            [1][2]
+                                  42            [1]
+                                  41            [1]
+                                  40            [1][2]
+                                  39            [1]
+                                  38            [1]
+                                  37            [1][2]
+                                  36            [1]
+                                  35            [1]
+                                  34            [1][2]
+                                  33            [1]
+                                  32            [1]
+                                  31            [1][2]
+                                  30            [1]
+                                  29            [1]
+                                  28            [1][2]
+                                  27            [1]
+                                  26            [1]
+                                  25            [1][2]
+                                  24            [1][2]
+                                  23            [1]
+                                  22            [1]
+                                  21            [1][2]
+                                  20            [1][2]
+                                  19            [1]
+                                  18            [1]
+                                  17            [1][2]
+                                  16            [1][2]
+                                  15            [1]
+                                  14            [1]
+                                  13            [1][2]
+                                  12            [1][2]
+                                  11            [1]
+                                  10            [1]
+                                   9            [1][2]
+                                   8            [1]
+                                   7            [1][2]
+                                   6            [1]
+                                   5            [1]
+                                   4            [1][2][3]
+                                   3            [1]
+                                   2            [1]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: REGISTER-RADIATION W22X W22Y
+        1: MOVE W22X W22Y W13X W13Y
+        2: REGISTER-RADIATION W13X W13Y
+        3: MOVE W13X W13Y W7X W7Y
+        4: REGISTER-RADIATION W7X W7Y
+        5: MOVE W7X W7Y W13X W13Y
+        6: MOVE W13X W13Y W12X W12Y
+        7: REGISTER-RADIATION W12X W12Y
+        8: MOVE W12X W12Y W17X W17Y
+        9: REGISTER-RADIATION W17X W17Y
+       10: INSPECT-WALL W17X W17Y WALL-OBJ12
+       11: MOVE W17X W17Y W13X W13Y
+       12: MOVE W13X W13Y W16X W16Y
+       13: REGISTER-RADIATION W16X W16Y
+       14: INSPECT-WALL W16X W16Y WALL-OBJ15
+       15: MOVE W16X W16Y W13X W13Y
+       16: MOVE W13X W13Y W15X W15Y
+       17: REGISTER-RADIATION W15X W15Y
+       18: INSPECT-WALL W15X W15Y WALL-OBJ13
+       19: MOVE W15X W15Y W13X W13Y
+       20: MOVE W13X W13Y W14X W14Y
+       21: REGISTER-RADIATION W14X W14Y
+       22: INSPECT-WALL W14X W14Y WALL-OBJ14
+       23: MOVE W14X W14Y W13X W13Y
+       24: MOVE W13X W13Y W21X W21Y
+       25: REGISTER-RADIATION W21X W21Y
+       26: INSPECT-VESSEL W21X W21Y VESSEL-OBJ32
+       27: MOVE W21X W21Y W13X W13Y
+       28: MOVE W13X W13Y W20X W20Y
+       29: REGISTER-RADIATION W20X W20Y
+       30: INSPECT-VESSEL W20X W20Y VESSEL-OBJ22
+       31: MOVE W20X W20Y W13X W13Y
+       32: MOVE W13X W13Y W19X W19Y
+       33: REGISTER-RADIATION W19X W19Y
+       34: INSPECT-VESSEL W19X W19Y VESSEL-OBJ2
+       35: MOVE W19X W19Y W13X W13Y
+       36: MOVE W13X W13Y W18X W18Y
+       37: REGISTER-RADIATION W18X W18Y
+       38: INSPECT-VESSEL W18X W18Y VESSEL-OBJ3
+       39: MOVE W18X W18Y W13X W13Y
+       40: MOVE W13X W13Y W1X W1Y
+       41: REGISTER-RADIATION W1X W1Y
+       42: INSPECT-VESSEL W1X W1Y VESSEL-OBJ6
+       43: MOVE W1X W1Y W13X W13Y
+       44: MOVE W13X W13Y W6X W6Y
+       45: REGISTER-RADIATION W6X W6Y
+       46: INSPECT-VESSEL W6X W6Y VESSEL-OBJ52
+       47: MOVE W6X W6Y W13X W13Y
+       48: MOVE W13X W13Y W5X W5Y
+       49: REGISTER-RADIATION W5X W5Y
+       50: INSPECT-VESSEL W5X W5Y VESSEL-OBJ42
+       51: MOVE W5X W5Y W13X W13Y
+       52: MOVE W13X W13Y W4X W4Y
+       53: REGISTER-RADIATION W4X W4Y
+       54: INSPECT-VESSEL W4X W4Y VESSEL-OBJ4
+       55: MOVE W4X W4Y W13X W13Y
+       56: MOVE W13X W13Y W3X W3Y
+       57: REGISTER-RADIATION W3X W3Y
+       58: INSPECT-VESSEL W3X W3Y VESSEL-OBJ5
+       59: MOVE W3X W3Y W13X W13Y
+       60: MOVE W13X W13Y W11X W11Y
+       61: REGISTER-RADIATION W11X W11Y
+       62: OPEN-VALVE W11X W11Y PIPE-OBJ8 VALVE-OBJ8
+       63: INSPECT-PIPES W11X W11Y PIPE-OBJ8 VALVE-OBJ8
+       64: CLOSE-VALVE W11X W11Y PIPE-OBJ8 VALVE-OBJ8
+       65: MOVE W11X W11Y W13X W13Y
+       66: MOVE W13X W13Y W10X W10Y
+       67: REGISTER-RADIATION W10X W10Y
+       68: OPEN-VALVE W10X W10Y PIPE-OBJ10 VALVE-OBJ10
+       69: INSPECT-PIPES W10X W10Y PIPE-OBJ10 VALVE-OBJ10
+       70: CLOSE-VALVE W10X W10Y PIPE-OBJ10 VALVE-OBJ10
+       71: MOVE W10X W10Y W13X W13Y
+       72: MOVE W13X W13Y W9X W9Y
+       73: REGISTER-RADIATION W9X W9Y
+       74: OPEN-VALVE W9X W9Y PIPE-OBJ9 VALVE-OBJ9
+       75: INSPECT-PIPES W9X W9Y PIPE-OBJ9 VALVE-OBJ9
+       76: CLOSE-VALVE W9X W9Y PIPE-OBJ9 VALVE-OBJ9
+       77: MOVE W9X W9Y W13X W13Y
+       78: MOVE W13X W13Y W8X W8Y
+       79: REGISTER-RADIATION W8X W8Y
+       80: OPEN-VALVE W8X W8Y PIPE-OBJ11 VALVE-OBJ11
+       81: INSPECT-PIPES W8X W8Y PIPE-OBJ11 VALVE-OBJ11
+       82: CLOSE-VALVE W8X W8Y PIPE-OBJ11 VALVE-OBJ11
+       83: MOVE W8X W8Y W13X W13Y
+       84: MOVE W13X W13Y W2X W2Y
+       85: REGISTER-RADIATION W2X W2Y
+       86: READ-PRESSURE W2X W2Y BOX-OBJ7
+       87: OPEN-VALVE W2X W2Y PIPE-OBJ7 VALVE-OBJ7
+       88: INSPECT-PIPES W2X W2Y PIPE-OBJ7 VALVE-OBJ7
+       89: CLOSE-VALVE W2X W2Y PIPE-OBJ7 VALVE-OBJ7
+       90: MOVE W2X W2Y W13X W13Y
+       91: SWITCH-OFF W13X W13Y SWITCH-OBJ16 TVESSEL-OBJ1
+       92: MOVE W13X W13Y W12X W12Y
+       93: INSPECT-TOGGLE-VESSEL W12X W12Y TVESSEL-OBJ1
+       94: MOVE W12X W12Y W13X W13Y
+       95: SWITCH-ON W13X W13Y SWITCH-OBJ16 TVESSEL-OBJ1
+       96: MOVE W13X W13Y W22X W22Y
+plan cost: 5659.045410
+
+time spent:    0.00 seconds instantiating 10702 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 120 facts and 538 actions
+               0.00 seconds creating final representation with 120 relevant facts, 1 relevant fluents
+               0.00 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.06 seconds searching, evaluating 1104 states, to a max depth of 3
+               0.06 seconds total time
+

@@ -5,7 +5,18 @@
     (:domain inspection31)
     
     ;Objects
-    (:objects   ;waypoints
+    (:objects   ;interesting objects for inspection - not used
+                pipe-obj7 pipe-obj11 pipe-obj9 pipe-obj10 pipe-obj8 - pipe
+                valve-obj7 valve-obj11 valve-obj9 valve-obj10 valve-obj8 - valve 
+                box-obj7 - control-box
+                vessel-obj5 vessel-obj4 vessel-obj4-2 vessel-obj5-2 vessel-obj6 
+                vessel-obj3 vessel-obj2 vessel-obj2-2 vessel-obj3-2 - regular-vessel
+                wall-obj14 wall-obj13 wall-obj15 wall-obj12 - wall
+                tvessel-obj1 - toggle-vessel
+                switch-obj16 - vessel-switch 
+    
+    
+                ;waypoints
                 w1x w2x w3x w4x w5x w6x w7x w8x w9x w10x 
                 w11x w12x w13x w14x w15x - posx
 

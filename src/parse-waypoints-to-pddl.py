@@ -18,6 +18,7 @@ waypoints = pd.read_csv(inputPath,
                         names = ['x', 'y', 'z', 'roll', 'pitch', 'yaw', 'w', 'objectName', 'isInteresting'])
 #print(waypoints)
 
+
 #save waypoints to a file, formatted to easily initialise in PDDL model
 #save waypoints to a file, formatted to keep track of which name is which waypoint
 

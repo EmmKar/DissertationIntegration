@@ -2,10 +2,19 @@
 ; Objects are arbitrarily defined. 
 
 (define (problem full-inspection)
-    (:domain inspection31)
+    (:domain inspection32)
     
     ;Objects
-    (:objects   ;waypoints
+    (:objects   
+                pipe1-obj10 pipe2-obj9 pipe3-obj8 pipe4-obj11 pipe5-obj7 - pipe
+                valve1 valve2 valve3 valve4 valve5 - valve 
+                box1-obj7 - control-box
+                vessel1-obj6 vessel2-obj4 vessel3-obj5 vessel4-obj5 vessel6-obj3 vessel7-obj2 - regular-vessel
+                wall1-obj14 wall2-obj13 wall3-obj15 wall4-obj12 - wall
+                vessel5-obj1 - toggle-vessel
+                switch1-obj16 - vessel-switch
+                
+                ;waypoints
                 w1x w2x w3x w4x w5x w6x w7x w8x w9x w10x 
                 w11x w12x w13x w14x w15x w16x w17x w18x w19x w20x  - posx
 
@@ -92,7 +101,8 @@
         (:goal (and (forall (?x - posx)
                                 (radiation-registered ?x))
                         (forall (?y - posy)
-                                (radiation-registered ?y))))
+                                (radiation-registered ?y))
+                    (at-waypoint w20x w20y)))
 
         
         (:metric minimize (total-cost))  

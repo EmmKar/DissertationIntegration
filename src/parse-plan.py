@@ -86,7 +86,8 @@ class ParseNavigation():
         newPlan = []
         # print(wpDict)
         for step in plan:
-            newPlan.append([float(wpDict.get(wp)) if wp[0] == 'w' else wp for wp in step])
+            print(step)
+            newPlan.append([float(wpDict.get(wp)) if wp[0] == 'w' and (len(wp)==3 or len(wp)==4) else wp for wp in step])
             # newPlan.append([wp[1:-1] for wp in step if wp[0]=='w'][0])
         print("replaceNames>> {}".format(newPlan))
         return newPlan
@@ -116,10 +117,28 @@ class ParseNavigation():
         for key in indexed:
             if 'move' in key:
                 stepList.append([key[0], key[1], values[key[0]-1][2:], 'waypoint'])
-            elif 'inspect' in key:
-                stepList.append([key[0], key[1], values[key[0]-1][:-1], values[key[0]-1][-1]])
+            # elif 'inspect' in key:
+            #     stepList.append([key[0], key[1], values[key[0]-1][:-1], values[key[0]-1][-1]])
             elif 'register-radiation' in key:
-                stepList.append([key[0], key[1], values[key[0]-1], 'waypoint'])
+                stepList.append([key[0], key[1], values[key[0]-1], 'radiation'])
+            elif 'switch-on' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])
+            elif 'switch-off' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])
+            elif 'inspect-toggle-vessel' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])
+            elif 'inspect-wall' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])
+            elif 'inspect-vessel' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])
+            elif 'read-pressure' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-1]])  
+            elif 'open-valve' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-2]])
+            elif 'close-valve' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-2]])
+            elif 'inspect-pipes' in key:
+                stepList.append([key[0], key[1], values[key[0]-1][0:2], values[key[0]-1][-2]])
             else:
                 print("createPlanDict> SOMETHING UNEXPECTED HAPPENED")
         print(*stepList, sep='\n')

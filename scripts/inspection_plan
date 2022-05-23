@@ -45,9 +45,9 @@ class InspectionPlan():
         rospy.loginfo("Connected to move base server")
         rospy.loginfo("Starting navigation test")
 
-        resrosult = self.implementPlan(self.pathLength, self.plan)
+        result = self.implementPlan(self.pathLength, self.plan)
         if result:
-            respy.loginfo("Goal execution done!")
+            rospy.loginfo("Goal execution done!")
 
 
 
@@ -125,7 +125,15 @@ class InspectionPlan():
             xcoord = plan_df.iloc[i]['x']
             ycoord = plan_df.iloc[i]['y']
             
-            if plan_df.iloc[i]['task'] == 'move':
+            if plan_df.iloc[i]['task'] == 'move' and consecutiveIssues > 3:
+                #If the robot has been reported stuck for above 3 movement steps, call for a human. The idea is that the human can 
+                # then manually enter to move the robot if it is a room without too high radiation, or use remote, manual control or 
+                # some other strategy to deal with the stuck robot. Then stop trying. 
+                self.callForHuman()
+                #Print the report for the inspection so far. 
+                self.printReport(issues, step=i, stoppedEarly=True)
+                break
+            elif plan_df.iloc[i]['task'] == 'move':
                 # # Initialise new goal
                 # goal = MoveBaseGoal()
                 
@@ -171,30 +179,36 @@ class InspectionPlan():
             # new plan. 
             elif plan_df.iloc[i]['task'] == 'inspect' and madeIt == True:
                 self.inspectObject(plan_df, i)
+            elif plan_df.iloc[i]['task'] == 'switch-on' and madeIt == True:
+                self.switchOn()
+            elif plan_df.iloc[i]['task'] == 'switch-off' and madeIt == True:
+                self.switchOff()
+            elif plan_df.iloc[i]['task'] == 'inspect-toggle-vessel' and madeIt == True:
+                self.inspectToggleVessel()
+            elif plan_df.iloc[i]['task'] == 'inspect-wall' and madeIt == True:
+                self.inspectWall()
+            elif plan_df.iloc[i]['task'] == 'inspect-vessel' and madeIt == True:
+                self.inspectVessel()
+            elif plan_df.iloc[i]['task'] == 'read-pressure' and madeIt == True:
+                self.readPressure()
+            elif plan_df.iloc[i]['task'] == 'open-valve' and madeIt == True:
+                self.openValve()
+            elif plan_df.iloc[i]['task'] == 'close-valve' and madeIt == True:
+                self.closeValve()
+            elif plan_df.iloc[i]['task'] == 'inspect-pipes' and madeIt == True:
+                self.inspectPipe()
             elif plan_df.iloc[i]['task'] == 'register-radiation' and madeIt == True:
                 self.recordRadiation()
-            elif plan_df.iloc[i]['task'] == 'print-report':
-                #Call printReport function to get results of inspection. If this task was reached, the plan was completed to the end (with 
-                # some number of issues), and so stoppedEarly is set as false. 
-                self.printReport(issues, step=i, stoppedEarly=False)
             elif plan_df.iloc[i]['task'] != 'move' and madeIt == False:
                 rospy.logerr("Cannot perform task number {}: {} because robot is not at waypoint. Moving to task number {}".format(i, plan_df.iloc[i]['task'], i+1))
-            elif plan_df.iloc[i]['task'] == 'move' and consecutiveIssues > 3:
-                #If the robot has been reported stuck for above 3 movement steps, call for a human. The idea is that the human can 
-                # then manually enter to move the robot if it is a room without too high radiation, or use remote, manual control or 
-                # some other strategy to deal with the stuck robot. Then stop trying. 
-                self.callForHuman()
-                #Print the report for the inspection so far. 
-                self.printReport(issues, step=i, stoppedEarly=True)
-                break
             else:
                 rospy.logerr("Unknown task. Please check your plan was parsed correctly")
                 print(plan_df.iloc[i])
 
             i += 1
         
-        # self.printReport(issues, step=i, stoppedEarly=False)
-        self.plotRadiation()
+        self.printReport(issues, step=i, stoppedEarly=False)
+        # self.plotRadiation()
         return True
 
 
@@ -247,13 +261,64 @@ class InspectionPlan():
     #     rospy.loginfo("Inspected object {}".format(plan_df.iloc[index]['object_type']))
     #     return
     
-    def switchOn():
+    def switchOn(self):
         rospy.loginfo("Switching on vessel...")
         rospy.sleep(5)
         rospy.loginfo("Switched on vessel.")
         return
 
+    def switchOff(self):
+        rospy.loginfo("Switching off vessel...")
+        rospy.sleep(5)
+        rospy.loginfo("Switched off vessel.")
+        return
+    
+    def inspectToggleVessel(self):
+        rospy.loginfo("Inspecting toggle vessel...")
+        rospy.sleep(5)
+        rospy.loginfo("Inspected toggle vessel.")
+        return
 
+    def inspectVessel(self):
+        rospy.loginfo("Inspecting vessel...")
+        rospy.sleep(5)
+        rospy.loginfo("Vessel is in good condition.")
+        return
+
+
+    def inspectWall(self):
+        rospy.loginfo("Checking wall for deterioration...")
+        rospy.sleep(5)
+        rospy.loginfo("Completed. Wall is in good condition")
+        return
+    
+    def readPressure(self):
+        rospy.loginfo("Checking metre...")
+        rospy.sleep(5)
+        rospy.loginfo("Pressure within acceptable values")
+        return
+    
+    def openValve(self):
+        rospy.loginfo("Opening valve...")
+        rospy.sleep(5)
+        rospy.loginfo("Valve open.")
+        return
+
+    def closeValve(self):
+        rospy.loginfo("Closing valve...")
+        rospy.sleep(5)
+        rospy.loginfo("Valve closed.")
+        return
+    
+    def inspectPipe(self):
+        rospy.loginfo("Checking pipes for leaks...")
+        rospy.sleep(5)
+        rospy.loginfo("Completed. No leaks detected")
+        return
+
+
+
+    
     # subscribe to topic: /radiation_sensor_plugin/sensor_0. 
     # topic type is gazebo_radiation_plugins/Simulated_Radiation_Msg
     # COULD make this a separate node later
@@ -312,6 +377,7 @@ class InspectionPlan():
         plt.ylabel("y")
         plt.savefig(self.projectPath + "/src/figures/" + plotName + ".png")
         plt.show()
+        return
 
 
     # Print out inspection report. 
@@ -331,7 +397,8 @@ class InspectionPlan():
         df = pd.DataFrame(self.radiationReadings, columns = ['x', 'y', 'z', 'Radiation Value'])
         df.sort_values(by=['x'], inplace = True)
 
-        print(df)
+        df.to_csv(filePath + ".csv", index = False, header = False)
+        return
 
 
     def outputDFtoPDF(self, pdf, df):

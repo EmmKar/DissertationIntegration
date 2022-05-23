@@ -5,22 +5,27 @@
     (:domain inspection31)
     
     ;Objects
-    (:objects   ;waypoints
+    (:objects  ;interesting objects for inspection - not used
+                pipe-obj7 pipe-obj11 pipe-obj9 pipe-obj10 pipe-obj8 - pipe
+                valve-obj7 valve-obj11 valve-obj9 valve-obj10 valve-obj8 - valve 
+                box-obj7 - control-box
+                vessel-obj5 vessel-obj4 vessel-obj4-2 vessel-obj5-2 vessel-obj6 
+                vessel-obj3 vessel-obj2 vessel-obj2-2 vessel-obj3-2 - regular-vessel
+                wall-obj14 wall-obj13 wall-obj15 wall-obj12 - wall
+                tvessel-obj1 - toggle-vessel
+                switch-obj16 - vessel-switch 
+    ;waypoints
                 w1x w2x w3x w4x w5x w6x w7x w8x w9x w10x 
                 w11x w12x w13x w14x w15x w16x w17x w18x w19x w20x 
                 w21x w22x w23x w24x w25x w26x w27x w28x w29x w30x 
                 w31x w32x w33x w34x w35x w36x w37x w38x w39x w40x 
-                w41x w42x w43x w44x w45x w46x w47x w48x w49x w50x 
-                w51x w52x w53x w54x w55x w56x w57x w58x w59x w60x 
-                w61x w62x w63x w64x w65x w66x w67x w68x  - posx
+                w41x w42x w43x w44x w45x w46x w47x w48x w49x w50x   - posx
 
                 w1y w2y w3y w4y w5y w6y w7y w8y w9y w10y 
                 w11y w12y w13y w14y w15y w16y w17y w18y w19y w20y 
                 w21y w22y w23y w24y w25y w26y w27y w28y w29y w30y 
                 w31y w32y w33y w34y w35y w36y w37y w38y w39y w40y 
-                w41y w42y w43y w44y w45y w46y w47y w48y w49y w50y 
-                w51y w52y w53y w54y w55y w56y w57y w58y w59y w60y 
-                w61y w62y w63y w64y w65y w66y w67y w68y  - posy
+                w41y w42y w43y w44y w45y w46y w47y w48y w49y w50y   - posy
     )
     
     ;Initial State
@@ -76,24 +81,7 @@
                 (= (waypoint w48x) -2.991973876953125) 
                 (= (waypoint w49x) -1.1190853118896484) 
                 (= (waypoint w50x) -1.2698564529418943) 
-                (= (waypoint w51x) -4.3794145584106445) 
-                (= (waypoint w52x) 0.7567977905273438) 
-                (= (waypoint w53x) 1.90557861328125) 
-                (= (waypoint w54x) 1.0633811950683594) 
-                (= (waypoint w55x) 2.9364118576049805) 
-                (= (waypoint w56x) 6.2021589279174805) 
-                (= (waypoint w57x) 7.806118965148926) 
-                (= (waypoint w58x) 6.575754165649414) 
-                (= (waypoint w59x) 4.857912063598633) 
-                (= (waypoint w60x) 7.938353538513184) 
-                (= (waypoint w61x) 6.407493591308594) 
-                (= (waypoint w62x) 4.336721420288086) 
-                (= (waypoint w63x) 7.3481903076171875) 
-                (= (waypoint w64x) 6.000916481018066) 
-                (= (waypoint w65x) 2.1140708923339844) 
-                (= (waypoint w66x) 1.3926963806152344) 
-                (= (waypoint w67x) -0.6474685668945312) 
-                (= (waypoint w68x) 0.5516986846923828) 
+
                 (= (waypoint w1y) -0.0259771347045898) 
                 (= (waypoint w2y) -0.0439786911010742) 
                 (= (waypoint w3y) -0.085784912109375) 
@@ -144,25 +132,7 @@
                 (= (waypoint w48y) 3.835938453674317) 
                 (= (waypoint w49y) 7.366295337677002) 
                 (= (waypoint w50y) 8.689624786376953) 
-                (= (waypoint w51y) 4.468411445617676) 
-                (= (waypoint w52y) 7.501811027526855) 
-                (= (waypoint w53y) 8.655957221984863) 
-                (= (waypoint w54y) 7.538145065307617) 
-                (= (waypoint w55y) 7.717143535614014) 
-                (= (waypoint w56y) 8.6217622756958) 
-                (= (waypoint w57y) 7.990253448486328) 
-                (= (waypoint w58y) 7.106501579284668) 
-                (= (waypoint w59y) 6.749738693237305) 
-                (= (waypoint w60y) 5.575770378112793) 
-                (= (waypoint w61y) 5.127005577087402) 
-                (= (waypoint w62y) 3.472482681274414) 
-                (= (waypoint w63y) 2.3798952102661133) 
-                (= (waypoint w64y) 1.9578466415405276) 
-                (= (waypoint w65y) 2.127309799194336) 
-                (= (waypoint w66y) 2.1152877807617188) 
-                (= (waypoint w67y) 2.2751903533935547) 
-                (= (waypoint w68y) 5.317008972167969) 
-
+    
             ;specify which combination of waypoint coordinates are valid
                 (is-waypoint w1x w1y) 
                 (is-waypoint w2x w2y) 
@@ -214,25 +184,7 @@
                 (is-waypoint w48x w48y) 
                 (is-waypoint w49x w49y) 
                 (is-waypoint w50x w50y) 
-                (is-waypoint w51x w51y) 
-                (is-waypoint w52x w52y) 
-                (is-waypoint w53x w53y) 
-                (is-waypoint w54x w54y) 
-                (is-waypoint w55x w55y) 
-                (is-waypoint w56x w56y) 
-                (is-waypoint w57x w57y) 
-                (is-waypoint w58x w58y) 
-                (is-waypoint w59x w59y) 
-                (is-waypoint w60x w60y) 
-                (is-waypoint w61x w61y) 
-                (is-waypoint w62x w62y) 
-                (is-waypoint w63x w63y) 
-                (is-waypoint w64x w64y) 
-                (is-waypoint w65x w65y) 
-                (is-waypoint w66x w66y) 
-                (is-waypoint w67x w67y) 
-                (is-waypoint w68x w68y) 
-
+   
             ;specify where the robot starts
                 (at-waypoint w1x w1y)
 
